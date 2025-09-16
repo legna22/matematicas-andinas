@@ -230,3 +230,4 @@ Para reportar problemas o solicitar funcionalidades:
 ---
 
 **¡Aprende matemáticas con la sabiduría ancestral andina!** 🏔️✨"# matematicas-andinas" 
+"# matematicas-andinas" 
