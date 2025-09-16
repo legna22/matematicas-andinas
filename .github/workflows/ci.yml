@@ -1,0 +1,237 @@
+# Matemáticas Andinas - CI/CD Pipeline
+# CHANGE HERE: Configurar según necesidades de CI/CD
+
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main ]
+
+env:
+  PYTHON_VERSION: '3.10'
+  NODE_VERSION: '18'
+
+jobs:
+  # Job 1: Linting y Verificación de Código
+  lint:
+    name: Code Linting
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: ${{ env.PYTHON_VERSION }}
+        
+    - name: Install Python dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install pylint black flake8
+        pip install -r requirements.txt
+        
+    - name: Run Black formatter check
+      run: black --check --diff app.py
+      
+    - name: Run Pylint
+      run: pylint app.py --fail-under=8.0
+      
+    - name: Run Flake8
+      run: flake8 app.py --max-line-length=88
+      
+    - name: Set up Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ env.NODE_VERSION }}
+        
+    - name: Install Node.js dependencies
+      run: |
+        npm install -g eslint
+        # CHANGE HERE: Agregar más herramientas si es necesario
+        
+    - name: Lint JavaScript
+      run: |
+        # Verificar sintaxis básica de JavaScript
+        find static/js -name "*.js" -exec node -c {} \;
+
+  # Job 2: Tests
+  test:
+    name: Run Tests
+    runs-on: ubuntu-latest
+    needs: lint
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: ${{ env.PYTHON_VERSION }}
+        
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install pytest pytest-cov
+        pip install -r requirements.txt
+        
+    - name: Validate JSON files
+      run: |
+        python -m json.tool data/levels.json > /dev/null
+        echo "✅ levels.json is valid"
+        
+    - name: Test Flask application
+      run: |
+        # Test básico de importación
+        python -c "from app import app; print('✅ App imports successfully')"
+        
+        # CHANGE HERE: Agregar tests más específicos
+        # pytest tests/ --cov=app --cov-report=xml
+        
+    - name: Test Docker build
+      run: |
+        docker build -t matematicas-andinas:test .
+        echo "✅ Docker image builds successfully"
+
+  # Job 3: Security Scan
+  security:
+    name: Security Scan
+    runs-on: ubuntu-latest
+    needs: lint
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: ${{ env.PYTHON_VERSION }}
+        
+    - name: Install security tools
+      run: |
+        python -m pip install --upgrade pip
+        pip install safety bandit
+        pip install -r requirements.txt
+        
+    - name: Run Safety check
+      run: safety check
+      
+    - name: Run Bandit security scan
+      run: bandit -r . -f json -o bandit-report.json || true
+      
+    - name: Upload security report
+      uses: actions/upload-artifact@v3
+      with:
+        name: security-report
+        path: bandit-report.json
+
+  # Job 4: Build and Test Docker
+  docker:
+    name: Docker Build & Test
+    runs-on: ubuntu-latest
+    needs: [lint, test]
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v3
+      
+    - name: Build Docker image
+      run: |
+        docker build -t matematicas-andinas:${{ github.sha }} .
+        
+    - name: Test Docker container
+      run: |
+        # Ejecutar contenedor en background
+        docker run -d --name test-container -p 8000:8000 matematicas-andinas:${{ github.sha }}
+        
+        # Esperar que el contenedor esté listo
+        sleep 10
+        
+        # Test básico de conectividad
+        curl -f http://localhost:8000/ || exit 1
+        
+        # Limpiar
+        docker stop test-container
+        docker rm test-container
+        
+    - name: Save Docker image
+      if: github.ref == 'refs/heads/main'
+      run: |
+        docker save matematicas-andinas:${{ github.sha }} | gzip > matematicas-andinas.tar.gz
+        
+    - name: Upload Docker image artifact
+      if: github.ref == 'refs/heads/main'
+      uses: actions/upload-artifact@v3
+      with:
+        name: docker-image
+        path: matematicas-andinas.tar.gz
+
+  # Job 5: Deploy (solo en main branch)
+  deploy:
+    name: Deploy to Production
+    runs-on: ubuntu-latest
+    needs: [lint, test, security, docker]
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    # CHANGE HERE: Configurar deployment según tu infraestructura
+    - name: Deploy to server
+      run: |
+        echo "🚀 Deployment would happen here"
+        echo "Configure your deployment method:"
+        echo "- SSH to server"
+        echo "- Docker registry push"
+        echo "- Cloud deployment"
+        echo "- etc."
+        
+    # Ejemplo de deployment con SSH
+    # - name: Deploy via SSH
+    #   uses: appleboy/ssh-action@v0.1.5
+    #   with:
+    #     host: ${{ secrets.HOST }}
+    #     username: ${{ secrets.USERNAME }}
+    #     key: ${{ secrets.SSH_KEY }}
+    #     script: |
+    #       cd matematicas-andinas
+    #       git pull origin main
+    #       docker compose down
+    #       docker compose up -d --build
+
+  # Job 6: Notification
+  notify:
+    name: Notify Results
+    runs-on: ubuntu-latest
+    needs: [lint, test, security, docker, deploy]
+    if: always()
+    
+    steps:
+    - name: Notify success
+      if: ${{ needs.lint.result == 'success' && needs.test.result == 'success' && needs.docker.result == 'success' }}
+      run: |
+        echo "✅ All checks passed successfully!"
+        echo "🎉 Ready for production"
+        
+    - name: Notify failure
+      if: ${{ needs.lint.result == 'failure' || needs.test.result == 'failure' || needs.docker.result == 'failure' }}
+      run: |
+        echo "❌ Some checks failed"
+        echo "🔧 Please review the failed jobs"
+        exit 1
+
+# CHANGE HERE: Configurar notificaciones adicionales
+# Ejemplos:
+# - Slack notifications
+# - Email notifications  
+# - Discord webhooks
+# - etc.

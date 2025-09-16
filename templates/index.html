@@ -1,0 +1,124 @@
+{% extends "base.html" %}
+
+{% block title %}Matemáticas Andinas - Seleccionar Juego{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/game.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="home-container">
+    <!-- Background Image -->
+    <!-- CHANGE HERE: Ruta de imagen de fondo -->
+    <div class="home-background" style="background-image: url('{{ url_for('static', filename='images/backgrounds/inicio.png') }}');">
+        <div class="home-overlay"></div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="home-content">
+        <header class="home-header">
+            <div class="logo-container">
+                <!-- CHANGE HERE: Rutas de logos -->
+                <img src="{{ url_for('static', filename='images/logos/logouno.png') }}" 
+                     alt="Logo Matemáticas Andinas" 
+                     class="main-logo"
+                     onerror="this.style.display='none'">
+            </div>
+            <h1 class="home-title">Matemáticas Andinas</h1>
+            <p class="home-subtitle">Aprende matemáticas con la sabiduría ancestral</p>
+        </header>
+
+        <div class="game-selection">
+            <div class="pergamino-container">
+                <div class="pergamino-content">
+                    <h2 class="selection-title">Elige tu aventura matemática</h2>
+                    
+                    <!-- Game Icons -->
+                    <div class="games-grid">
+                        <div class="game-option" data-game="khipu" role="button" tabindex="0" aria-label="Seleccionar Khipu">
+                            <div class="game-icon khipu-icon">
+                                <div class="icon-content">🪢</div>
+                            </div>
+                            <h3>Khipu</h3>
+                            <p>Sistema de nudos para contar</p>
+                        </div>
+                        
+                        <div class="game-option" data-game="yupana" role="button" tabindex="0" aria-label="Seleccionar Yupana">
+                            <div class="game-icon yupana-icon">
+                                <div class="icon-content">🧮</div>
+                            </div>
+                            <h3>Yupana</h3>
+                            <p>Ábaco andino ancestral</p>
+                        </div>
+                        
+                        <div class="game-option" data-game="chacana" role="button" tabindex="0" aria-label="Seleccionar Chacana">
+                            <div class="game-icon chacana-icon">
+                                <div class="icon-content">✚</div>
+                            </div>
+                            <h3>Chacana</h3>
+                            <p>Cruz andina sagrada</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Grade Selection -->
+                    <div class="grade-selection">
+                        <div class="education-level">
+                            <h3>Nivel Educativo</h3>
+                            <div class="level-buttons">
+                                <button class="btn-level active" data-level="primaria" aria-label="Seleccionar Primaria">
+                                    Primaria
+                                </button>
+                                <button class="btn-level" data-level="secundaria" aria-label="Seleccionar Secundaria">
+                                    Secundaria
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="grade-number">
+                            <h3>Grado</h3>
+                            <select id="gradeSelect" class="grade-dropdown" aria-label="Seleccionar grado">
+                                <option value="1">1° Grado</option>
+                                <option value="2">2° Grado</option>
+                                <option value="3">3° Grado</option>
+                                <option value="4">4° Grado</option>
+                                <option value="5">5° Grado</option>
+                                <option value="6">6° Grado</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <!-- Play Button -->
+                    <div class="play-section">
+                        <button class="btn-play disabled" id="playButton" disabled aria-label="Comenzar juego">
+                            <span class="play-text">Selecciona un juego</span>
+                            <span class="play-icon">▶️</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Additional Options -->
+        <div class="additional-options">
+            <a href="/perfil" class="option-link">
+                <span class="option-icon">👤</span>
+                Mi Perfil
+            </a>
+            <a href="/admin/levels" class="option-link admin-link">
+                <span class="option-icon">⚙️</span>
+                Editor de Niveles
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- CHANGE HERE: Texto y enlaces de información adicional -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    initHomeSelection();
+    
+    // SUGGEST: Para agregar nuevos juegos, editar la función initHomeSelection en main.js
+    console.log('🎮 Home page initialized - Ready to select games');
+});
+</script>
+{% endblock %}

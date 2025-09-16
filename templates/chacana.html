@@ -1,0 +1,176 @@
+{% extends "base.html" %}
+
+{% block title %}Chacana - Matemáticas Andinas{% endblock %}
+{% block game_title %}Chacana - Cruz Andina{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/game.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/chacana.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="game-container chacana-container">
+    <!-- Game Background -->
+    <div class="game-background chacana-background"></div>
+    
+    <!-- Main Game Area -->
+    <div class="game-area">
+        <!-- Question Section -->
+        <div class="question-section">
+            <div class="question-pergamino">
+                <h2 class="question-title">Completa el patrón</h2>
+                <p class="question-desc" id="questionDesc">
+                    Encuentra los elementos faltantes para completar la simetría de la chacana
+                </p>
+                <div class="pattern-info">
+                    <span class="pattern-type" id="patternType">Simetría simple</span>
+                </div>
+                <div class="question-info">
+                    <span class="grade-info">Grado: {{ grade }}</span>
+                    <span class="level-info">Nivel: {{ level }}</span>
+                    <span class="time-info" id="timeRemaining" style="display: none;">Tiempo: <span id="timeValue">--</span>s</span>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Chacana Pattern Area -->
+        <div class="chacana-area">
+            <div class="chacana-frame">
+                <div class="chacana-grid" id="chacanaGrid">
+                    <!-- Center Cross -->
+                    <div class="cross-section center">
+                        <div class="grid-cell filled" data-pos="center"></div>
+                    </div>
+                    
+                    <!-- North -->
+                    <div class="cross-section north">
+                        <div class="grid-cell filled" data-pos="n1"></div>
+                        <div class="grid-cell empty selectable" data-pos="n2" data-pattern="circle"></div>
+                        <div class="grid-cell filled" data-pos="n3"></div>
+                    </div>
+                    
+                    <!-- East -->
+                    <div class="cross-section east">
+                        <div class="grid-cell filled" data-pos="e1"></div>
+                        <div class="grid-cell filled" data-pos="e2"></div>
+                        <div class="grid-cell empty selectable" data-pos="e3" data-pattern="triangle"></div>
+                    </div>
+                    
+                    <!-- South -->
+                    <div class="cross-section south">
+                        <div class="grid-cell empty selectable" data-pos="s1" data-pattern="circle"></div>
+                        <div class="grid-cell filled" data-pos="s2"></div>
+                        <div class="grid-cell filled" data-pos="s3"></div>
+                    </div>
+                    
+                    <!-- West -->
+                    <div class="cross-section west">
+                        <div class="grid-cell filled" data-pos="w1"></div>
+                        <div class="grid-cell empty selectable" data-pos="w2" data-pattern="triangle"></div>
+                        <div class="grid-cell filled" data-pos="w3"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Pattern Options -->
+        <div class="pattern-options">
+            <h3>Selecciona el patrón correcto:</h3>
+            <div class="options-grid">
+                <div class="pattern-option" data-pattern="circle" role="button" tabindex="0" aria-label="Círculo">
+                    <div class="pattern-preview circle-pattern"></div>
+                    <span class="pattern-name">Círculo</span>
+                </div>
+                
+                <div class="pattern-option" data-pattern="triangle" role="button" tabindex="0" aria-label="Triángulo">
+                    <div class="pattern-preview triangle-pattern"></div>
+                    <span class="pattern-name">Triángulo</span>
+                </div>
+                
+                <div class="pattern-option" data-pattern="square" role="button" tabindex="0" aria-label="Cuadrado">
+                    <div class="pattern-preview square-pattern"></div>
+                    <span class="pattern-name">Cuadrado</span>
+                </div>
+                
+                <div class="pattern-option" data-pattern="diamond" role="button" tabindex="0" aria-label="Diamante">
+                    <div class="pattern-preview diamond-pattern"></div>
+                    <span class="pattern-name">Diamante</span>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Answer Section -->
+        <div class="answer-section">
+            <div class="completion-status">
+                <span class="status-label">Completado:</span>
+                <span class="status-value" id="completionStatus">0/4</span>
+            </div>
+            <div class="action-buttons">
+                <button class="btn btn-secondary" onclick="clearSelections()" aria-label="Limpiar selecciones">
+                    Limpiar
+                </button>
+                <button class="btn btn-primary" onclick="checkPattern()" aria-label="Verificar patrón">
+                    Verificar
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Progress Bar -->
+    <div class="progress-container">
+        <div class="progress-bar">
+            <div class="progress-fill" style="width: 60%"></div>
+        </div>
+        <span class="progress-text">Progreso del Nivel</span>
+    </div>
+    
+    <!-- Help Button -->
+    <button class="help-btn" onclick="showHelp()" aria-label="Mostrar ayuda">
+        <span class="help-icon">❓</span>
+    </button>
+</div>
+
+<!-- Help Modal -->
+<div class="modal" id="helpModal" style="display: none;">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3>La Chacana Sagrada</h3>
+            <button class="modal-close" onclick="closeHelp()" aria-label="Cerrar ayuda">&times;</button>
+        </div>
+        <div class="modal-body">
+            <p>La chacana es la cruz andina, símbolo sagrado que representa el equilibrio y la armonía.</p>
+            <ul>
+                <li><strong>Simetría:</strong> Los elementos deben reflejarse en todas las direcciones</li>
+                <li><strong>Equilibrio:</strong> Cada brazo de la cruz debe estar balanceado</li>
+                <li><strong>Patrones:</strong> Los símbolos representan diferentes conceptos matemáticos</li>
+                <li><strong>Armonía:</strong> Todo debe estar en perfecta proporción</li>
+            </ul>
+            <p>Selecciona un patrón y haz clic en las celdas vacías para completar la simetría.</p>
+        </div>
+    </div>
+</div>
+
+<!-- Level Data -->
+<script>
+window.GAME_DATA = {
+    game: 'chacana',
+    grade: {{ grade }},
+    level: {{ level }},
+    levels: {{ levels | tojson | safe }}
+
+};
+</script>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{{ url_for('static', filename='js/chacana.js') }}"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    initChacanaGame();
+    showGameHeader();
+    
+    // CHANGE HERE: Configuración específica del juego Chacana
+    console.log('✚ Chacana game initialized for Grade {{ grade }}, Level {{ level }}');
+});
+</script>
+{% endblock %}

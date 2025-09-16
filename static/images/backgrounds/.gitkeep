@@ -1,0 +1,11 @@
+# Directorio para imágenes de fondo
+# CHANGE HERE: Colocar aquí las siguientes imágenes:
+# - inicio.png (mínimo 1920x1080px) - imagen principal del home
+# - fondo-menu.png (1920x1080px) - fondo alternativo
+# - pergamino.png (tex tura de pergamino para modales)
+
+# Las imágenes deben ser optimizadas para web (formato WebP recomendado)
+# Tamaños recomendados:
+# - Fondos principales: 1920x1080px
+# - Texturas: 512x512px (repetibles)
+# - Elementos decorativos: según necesidad

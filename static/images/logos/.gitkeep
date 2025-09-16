@@ -1,0 +1,11 @@
+# Directorio para logos e iconos
+# CHANGE HERE: Colocar aquí los siguientes logos:
+# - logouno.png (512x512px) - logo principal
+# - logodos.png (512x512px) - logo alternativo
+# - logotres.png (512x512px) - logo secundario
+
+# Formatos recomendados:
+# - PNG con transparencia para logos
+# - SVG para iconos escalables
+# - Tamaño mínimo: 256x256px
+# - Tamaño recomendado: 512x512px

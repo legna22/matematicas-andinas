@@ -1,0 +1,265 @@
+{% extends "base.html" %}
+
+{% block title %}Página no encontrada - Matemáticas Andinas{% endblock %}
+
+{% block content %}
+<div class="error-container">
+    <div class="error-background" style="background-image: url('{{ url_for('static', filename='images/backgrounds/pergamino.png') }}');">
+        <div class="error-overlay"></div>
+    </div>
+    
+    <div class="error-content">
+        <div class="error-mascot">
+            <div class="mascot-character">🦙</div>
+            <div class="mascot-speech">
+                <p>¡Oops! Parece que te perdiste en los caminos andinos...</p>
+            </div>
+        </div>
+        
+        <div class="error-details">
+            <h1 class="error-code">404</h1>
+            <h2 class="error-title">Página no encontrada</h2>
+            <p class="error-message">
+                La página que buscas no existe o ha sido movida. 
+                ¡Pero no te preocupes! Podemos llevarte de vuelta al camino correcto.
+            </p>
+        </div>
+        
+        <div class="error-suggestions">
+            <h3>¿Qué puedes hacer?</h3>
+            <ul class="suggestions-list">
+                <li>
+                    <span class="suggestion-icon">🏠</span>
+                    <a href="/" class="suggestion-link">Volver al inicio</a>
+                </li>
+                <li>
+                    <span class="suggestion-icon">🪢</span>
+                    <a href="/khipu?grade=1&level=1" class="suggestion-link">Jugar Khipu</a>
+                </li>
+                <li>
+                    <span class="suggestion-icon">🧮</span>
+                    <a href="/yupana?grade=1&level=1" class="suggestion-link">Jugar Yupana</a>
+                </li>
+                <li>
+                    <span class="suggestion-icon">✚</span>
+                    <a href="/chacana?grade=1&level=1" class="suggestion-link">Jugar Chacana</a>
+                </li>
+            </ul>
+        </div>
+        
+        <div class="error-actions">
+            <button class="btn btn-primary" onclick="goHome()">
+                <span class="btn-icon">🏠</span>
+                Ir al Inicio
+            </button>
+            <button class="btn btn-secondary" onclick="history.back()">
+                <span class="btn-icon">↶</span>
+                Página Anterior
+            </button>
+        </div>
+        
+        <!-- Fun Facts about Andean Culture -->
+        <div class="fun-fact">
+            <h4>¿Sabías que...?</h4>
+            <p id="funFactText">
+                Los incas no tenían un sistema de escritura, pero usaban khipus 
+                para llevar registros matemáticos y administrativos complejos.
+            </p>
+        </div>
+    </div>
+</div>
+
+<style>
+.error-container {
+    min-height: 100vh;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.error-background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.error-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(139, 69, 19, 0.1);
+}
+
+.error-content {
+    position: relative;
+    max-width: 600px;
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 15px;
+    padding: 40px;
+    text-align: center;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+}
+
+.error-mascot {
+    margin-bottom: 30px;
+}
+
+.mascot-character {
+    font-size: 4rem;
+    margin-bottom: 15px;
+    animation: bounce 2s infinite;
+}
+
+.mascot-speech {
+    background: #FFF8DC;
+    border-radius: 20px;
+    padding: 15px;
+    position: relative;
+    border: 2px solid #D2B48C;
+}
+
+.mascot-speech::before {
+    content: '';
+    position: absolute;
+    top: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 0;
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    border-bottom: 10px solid #D2B48C;
+}
+
+.error-code {
+    font-size: 6rem;
+    font-weight: bold;
+    color: #8B4513;
+    margin: 0;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.error-title {
+    color: #8B4513;
+    font-size: 2rem;
+    margin: 10px 0;
+}
+
+.error-message {
+    color: #666;
+    font-size: 1.1rem;
+    line-height: 1.6;
+    margin-bottom: 30px;
+}
+
+.suggestions-list {
+    list-style: none;
+    padding: 0;
+    margin: 20px 0;
+}
+
+.suggestions-list li {
+    display: flex;
+    align-items: center;
+    margin: 10px 0;
+    padding: 10px;
+    background: rgba(139, 69, 19, 0.1);
+    border-radius: 8px;
+}
+
+.suggestion-icon {
+    font-size: 1.5rem;
+    margin-right: 15px;
+}
+
+.suggestion-link {
+    color: #8B4513;
+    text-decoration: none;
+    font-weight: bold;
+    transition: color 0.3s;
+}
+
+.suggestion-link:hover {
+    color: #A0522D;
+    text-decoration: underline;
+}
+
+.error-actions {
+    margin: 30px 0;
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.fun-fact {
+    margin-top: 30px;
+    padding: 20px;
+    background: linear-gradient(135deg, #FFF8DC, #F5E6D3);
+    border-radius: 10px;
+    border-left: 4px solid #D2691E;
+}
+
+.fun-fact h4 {
+    color: #8B4513;
+    margin-top: 0;
+}
+
+@keyframes bounce {
+    0%, 20%, 50%, 80%, 100% {
+        transform: translateY(0);
+    }
+    40% {
+        transform: translateY(-10px);
+    }
+    60% {
+        transform: translateY(-5px);
+    }
+}
+
+@media (max-width: 768px) {
+    .error-content {
+        padding: 20px;
+    }
+    
+    .error-code {
+        font-size: 4rem;
+    }
+    
+    .error-actions {
+        flex-direction: column;
+    }
+}
+</style>
+
+<script>
+const funFacts = [
+    "Los incas no tenían un sistema de escritura, pero usaban khipus para llevar registros matemáticos y administrativos complejos.",
+    "La yupana permitía a los antiguos andinos realizar cálculos complejos usando el sistema decimal mucho antes que otras civilizaciones.",
+    "La chacana representa el equilibrio cósmico y se encuentra en muchas construcciones arquitectónicas incas.",
+    "Los nudos en los khipus podían representar no solo números, sino también colores, direcciones y conceptos abstractos.",
+    "Machu Picchu fue construido usando principios matemáticos que aún asombran a los arquitectos modernos."
+];
+
+document.addEventListener('DOMContentLoaded', function() {
+    // Rotar datos curiosos cada 5 segundos
+    let factIndex = 0;
+    setInterval(() => {
+        factIndex = (factIndex + 1) % funFacts.length;
+        document.getElementById('funFactText').textContent = funFacts[factIndex];
+    }, 5000);
+    
+    // CHANGE HERE: Configuración de la página 404
+    console.log('❌ 404 page loaded - User can navigate back to safety');
+});
+</script>
+{% endblock %}

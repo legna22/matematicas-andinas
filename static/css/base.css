@@ -1,0 +1,412 @@
+/**
+ * Matemáticas Andinas - Base Styles
+ * Estilos fundamentales y variables CSS
+ */
+
+/* CHANGE HERE: Paleta de colores principal */
+:root {
+    /* Colores primarios inspirados en paisajes andinos */
+    --color-mountain-green: #4A6741;      /* Verde montaña */
+    --color-earth-brown: #8B4513;         /* Marrón tierra */
+    --color-golden-sun: #D2691E;          /* Dorado sol */
+    --color-sky-blue: #87CEEB;            /* Azul cielo */
+    --color-terracotta: #CD853F;          /* Terracota */
+    
+    /* Colores secundarios */
+    --color-light-parchment: #FFF8DC;     /* Pergamino claro */
+    --color-dark-parchment: #F5E6D3;      /* Pergamino oscuro */
+    --color-shadow: rgba(139, 69, 19, 0.3);
+    
+    /* Colores de estado */
+    --color-success: #228B22;             /* Verde éxito */
+    --color-warning: #FF8C00;             /* Naranja advertencia */
+    --color-error: #DC143C;               /* Rojo error */
+    --color-info: #4682B4;                /* Azul información */
+    
+    /* Espaciado consistente con sistema 8px */
+    --spacing-xs: 4px;
+    --spacing-sm: 8px;
+    --spacing-md: 16px;
+    --spacing-lg: 24px;
+    --spacing-xl: 32px;
+    --spacing-xxl: 48px;
+    
+    /* Tipografía */
+    --font-family-primary: 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
+    --font-family-headings: 'Georgia', 'Times New Roman', serif;
+    --font-size-xs: 0.75rem;              /* 12px */
+    --font-size-sm: 0.875rem;             /* 14px */
+    --font-size-base: 1rem;               /* 16px */
+    --font-size-lg: 1.125rem;             /* 18px */
+    --font-size-xl: 1.25rem;              /* 20px */
+    --font-size-2xl: 1.5rem;              /* 24px */
+    --font-size-3xl: 2rem;                /* 32px */
+    
+    /* Sombras y efectos */
+    --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.12);
+    --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.15);
+    --shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.2);
+    --shadow-glow: 0 0 20px rgba(210, 105, 30, 0.4);
+    
+    /* Bordes y radio */
+    --border-radius-sm: 4px;
+    --border-radius-md: 8px;
+    --border-radius-lg: 12px;
+    --border-radius-full: 50%;
+    
+    /* Transiciones */
+    --transition-fast: 0.15s ease;
+    --transition-normal: 0.3s ease;
+    --transition-slow: 0.5s ease;
+}
+
+/* Reset y configuración base */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    font-size: 16px;
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: var(--font-family-primary);
+    font-size: var(--font-size-base);
+    line-height: 1.6;
+    color: var(--color-earth-brown);
+    background: linear-gradient(135deg, var(--color-light-parchment), var(--color-dark-parchment));
+    min-height: 100vh;
+}
+
+/* Tipografía */
+h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-family-headings);
+    font-weight: bold;
+    line-height: 1.3;
+    color: var(--color-earth-brown);
+    margin-bottom: var(--spacing-md);
+}
+
+h1 { font-size: var(--font-size-3xl); }
+h2 { font-size: var(--font-size-2xl); }
+h3 { font-size: var(--font-size-xl); }
+h4 { font-size: var(--font-size-lg); }
+
+p {
+    margin-bottom: var(--spacing-md);
+    line-height: 1.7;
+}
+
+a {
+    color: var(--color-golden-sun);
+    text-decoration: none;
+    transition: color var(--transition-fast);
+}
+
+a:hover {
+    color: var(--color-terracotta);
+    text-decoration: underline;
+}
+
+/* Botones base */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--spacing-md) var(--spacing-xl);
+    font-size: var(--font-size-base);
+    font-weight: 600;
+    border: none;
+    border-radius: var(--border-radius-md);
+    cursor: pointer;
+    transition: all var(--transition-normal);
+    text-decoration: none;
+    gap: var(--spacing-sm);
+    min-height: 44px; /* Accesibilidad - tamaño mínimo de toque */
+}
+
+.btn:disabled,
+.btn.disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    pointer-events: none;
+}
+
+/* Variantes de botones */
+.btn-primary {
+    background: linear-gradient(135deg, var(--color-golden-sun), var(--color-terracotta));
+    color: white;
+    box-shadow: var(--shadow-md);
+}
+
+.btn-primary:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-lg);
+    background: linear-gradient(135deg, var(--color-terracotta), var(--color-golden-sun));
+}
+
+.btn-secondary {
+    background: var(--color-mountain-green);
+    color: white;
+    box-shadow: var(--shadow-sm);
+}
+
+.btn-secondary:hover:not(:disabled) {
+    background: #3a5634;
+    transform: translateY(-1px);
+}
+
+.btn-tertiary {
+    background: var(--color-light-parchment);
+    color: var(--color-earth-brown);
+    border: 2px solid var(--color-earth-brown);
+}
+
+.btn-tertiary:hover:not(:disabled) {
+    background: var(--color-earth-brown);
+    color: var(--color-light-parchment);
+}
+
+.btn-small {
+    padding: var(--spacing-sm) var(--spacing-md);
+    font-size: var(--font-size-sm);
+    min-height: 36px;
+}
+
+.btn-large {
+    padding: var(--spacing-lg) var(--spacing-xxl);
+    font-size: var(--font-size-lg);
+    min-height: 56px;
+}
+
+/* Estados de éxito/error */
+.btn-success {
+    background: var(--color-success);
+    color: white;
+}
+
+.btn-danger {
+    background: var(--color-error);
+    color: white;
+}
+
+/* Formularios */
+.form-group {
+    margin-bottom: var(--spacing-lg);
+}
+
+.form-label {
+    display: block;
+    margin-bottom: var(--spacing-sm);
+    font-weight: 600;
+    color: var(--color-earth-brown);
+}
+
+.form-input,
+.form-select,
+.form-textarea {
+    width: 100%;
+    padding: var(--spacing-md);
+    border: 2px solid var(--color-dark-parchment);
+    border-radius: var(--border-radius-md);
+    font-size: var(--font-size-base);
+    transition: border-color var(--transition-fast);
+    background: white;
+}
+
+.form-input:focus,
+.form-select:focus,
+.form-textarea:focus {
+    outline: none;
+    border-color: var(--color-golden-sun);
+    box-shadow: 0 0 0 3px rgba(210, 105, 30, 0.1);
+}
+
+/* Utilidades de espaciado */
+.mt-xs { margin-top: var(--spacing-xs); }
+.mt-sm { margin-top: var(--spacing-sm); }
+.mt-md { margin-top: var(--spacing-md); }
+.mt-lg { margin-top: var(--spacing-lg); }
+.mt-xl { margin-top: var(--spacing-xl); }
+
+.mb-xs { margin-bottom: var(--spacing-xs); }
+.mb-sm { margin-bottom: var(--spacing-sm); }
+.mb-md { margin-bottom: var(--spacing-md); }
+.mb-lg { margin-bottom: var(--spacing-lg); }
+.mb-xl { margin-bottom: var(--spacing-xl); }
+
+.p-xs { padding: var(--spacing-xs); }
+.p-sm { padding: var(--spacing-sm); }
+.p-md { padding: var(--spacing-md); }
+.p-lg { padding: var(--spacing-lg); }
+.p-xl { padding: var(--spacing-xl); }
+
+/* Utilidades de texto */
+.text-center { text-align: center; }
+.text-left { text-align: left; }
+.text-right { text-align: right; }
+
+.font-bold { font-weight: bold; }
+.font-normal { font-weight: normal; }
+
+.text-success { color: var(--color-success); }
+.text-warning { color: var(--color-warning); }
+.text-error { color: var(--color-error); }
+.text-info { color: var(--color-info); }
+
+/* Contenedores flexibles */
+.flex {
+    display: flex;
+}
+
+.flex-col {
+    flex-direction: column;
+}
+
+.items-center {
+    align-items: center;
+}
+
+.justify-center {
+    justify-content: center;
+}
+
+.justify-between {
+    justify-content: space-between;
+}
+
+.gap-sm { gap: var(--spacing-sm); }
+.gap-md { gap: var(--spacing-md); }
+.gap-lg { gap: var(--spacing-lg); }
+
+/* Elementos ocultos accesibles */
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+/* Responsive breakpoints */
+/* CHANGE HERE: Ajustar breakpoints según necesidades */
+@media (max-width: 480px) {
+    :root {
+        --font-size-3xl: 1.75rem;
+        --font-size-2xl: 1.375rem;
+    }
+    
+    .btn {
+        padding: var(--spacing-sm) var(--spacing-lg);
+    }
+}
+
+@media (min-width: 481px) and (max-width: 768px) {
+    /* Tablet styles */
+}
+
+@media (min-width: 769px) and (max-width: 1024px) {
+    /* Desktop small styles */
+}
+
+@media (min-width: 1025px) {
+    /* Desktop large styles */
+}
+
+/* Animaciones útiles */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes slideInFromLeft {
+    from {
+        opacity: 0;
+        transform: translateX(-50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes pulse {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.7;
+    }
+}
+
+.animate-fade-in {
+    animation: fadeIn 0.6s ease-out;
+}
+
+.animate-slide-in-left {
+    animation: slideInFromLeft 0.6s ease-out;
+}
+
+.animate-pulse {
+    animation: pulse 2s infinite;
+}
+
+/* Estados de carga */
+.loading {
+    position: relative;
+    overflow: hidden;
+}
+
+.loading::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(255, 255, 255, 0.4),
+        transparent
+    );
+    animation: loading-shimmer 1.5s infinite;
+}
+
+@keyframes loading-shimmer {
+    0% {
+        left: -100%;
+    }
+    100% {
+        left: 100%;
+    }
+}
+
+/* Print styles */
+@media print {
+    .no-print {
+        display: none !important;
+    }
+    
+    body {
+        background: white;
+        color: black;
+    }
+    
+    .btn {
+        border: 1px solid black;
+    }
+}

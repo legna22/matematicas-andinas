@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Matemáticas Andinas{% endblock %}</title>
+    
+    <!-- CHANGE HERE: Rutas de CSS y metadatos -->
+    <meta name="description" content="Juego educativo de matemáticas con elementos de la cultura andina">
+    <meta name="keywords" content="matemáticas, educación, cultura andina, khipu, yupana, chacana">
+    <meta name="author" content="Matemáticas Andinas">
+    
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
+    {% block extra_css %}{% endblock %}
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='images/logos/logouno.png') }}">
+</head>
+<body>
+    <!-- Header Navigation -->
+    <header class="game-header" id="gameHeader" style="display: none;">
+        <div class="header-content">
+            <div class="header-left">
+                <button class="btn-home" onclick="goHome()" aria-label="Volver al inicio">
+                    <span class="icon-home">🏠</span>
+                </button>
+                <div class="level-info">
+                    <span id="currentLevel">Nivel 1</span>
+                    <span id="currentGrade">Grado 1</span>
+                </div>
+            </div>
+            
+            <div class="header-center">
+                <h1 id="gameTitle">{% block game_title %}Matemáticas Andinas{% endblock %}</h1>
+            </div>
+            
+            <div class="header-right">
+                <button class="btn-pause" onclick="togglePause()" aria-label="Pausar juego">
+                    <span class="icon-pause">⏸️</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- Pause Overlay -->
+    <div class="pause-overlay" id="pauseOverlay" style="display: none;">
+        <div class="pause-menu">
+            <h2>Juego Pausado</h2>
+            <div class="pause-buttons">
+                <button class="btn btn-primary" onclick="resumeGame()" aria-label="Reanudar juego">
+                    Reanudar
+                </button>
+                <button class="btn btn-secondary" onclick="restartLevel()" aria-label="Reiniciar nivel">
+                    Reiniciar Nivel
+                </button>
+                <button class="btn btn-tertiary" onclick="goHome()" aria-label="Volver al inicio">
+                    Volver al Inicio
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" id="loadingOverlay" style="display: none;">
+        <div class="loading-content">
+            <div class="loading-spinner"></div>
+            <p>Cargando...</p>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/game-common.js') }}"></script>
+    {% block extra_js %}{% endblock %}
+    
+    <!-- CHANGE HERE: Configuración de desarrollo -->
+    <script>
+        // Configuración global de la aplicación
+        window.MATEMATICAS_ANDINAS = {
+            version: '1.0.0',
+            debug: true, // CHANGE HERE: false para producción
+            apiUrl: '/api'
+        };
+        
+        // SUGGEST: make a git commit and tag as v1.0.0
+        // Ejemplo: git commit -m "feat: initial complete implementation of Matematicas Andinas educational game"
+        console.log('🏔️ Matemáticas Andinas v' + window.MATEMATICAS_ANDINAS.version + ' cargado correctamente');
+    </script>
+</body>
+</html>

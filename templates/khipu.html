@@ -1,0 +1,144 @@
+{% extends "base.html" %}
+
+{% block title %}Khipu - Matemáticas Andinas{% endblock %}
+{% block game_title %}Khipu - Sistema de Nudos{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/game.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/khipu.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="game-container khipu-container">
+    <!-- Game Background -->
+    <div class="game-background khipu-background"></div>
+    
+    <!-- Main Game Area -->
+    <div class="game-area">
+        <!-- Question Section -->
+        <div class="question-section">
+            <div class="question-pergamino">
+                <h2 class="question-title">¿Cuántos nudos ves?</h2>
+                <p class="question-desc" id="questionDesc">
+                    Cuenta los nudos en el khipu y selecciona la respuesta correcta
+                </p>
+                <div class="question-info">
+                    <span class="grade-info">Grado: {{ grade }}</span>
+                    <span class="level-info">Nivel: {{ level }}</span>
+                    <span class="time-info" id="timeRemaining" style="display: none;">Tiempo: <span id="timeValue">--</span>s</span>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Khipu Canvas Area -->
+        <div class="khipu-area">
+            <div class="khipu-frame">
+                <canvas id="khipuCanvas" 
+                        width="600" 
+                        height="400"
+                        aria-label="Área de visualización del khipu">
+                    Tu navegador no soporta canvas. Por favor, actualiza tu navegador.
+                </canvas>
+                
+                <!-- Placeholder content for development -->
+                <div class="khipu-placeholder" id="khipuPlaceholder">
+                    <div class="cord-main"></div>
+                    <div class="knots-container">
+                        <div class="knot-group">
+                            <div class="knot simple"></div>
+                            <div class="knot simple"></div>
+                            <div class="knot compound"></div>
+                        </div>
+                        <div class="knot-group">
+                            <div class="knot simple"></div>
+                            <div class="knot simple"></div>
+                        </div>
+                        <div class="knot-group">
+                            <div class="knot compound"></div>
+                            <div class="knot simple"></div>
+                            <div class="knot simple"></div>
+                            <div class="knot simple"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Answer Options -->
+        <div class="answer-section">
+            <div class="answer-options">
+                <button class="answer-btn" data-answer="1" aria-label="Respuesta 1">
+                    <span class="answer-number">5</span>
+                    <span class="answer-label">Cinco nudos</span>
+                </button>
+                
+                <button class="answer-btn" data-answer="2" aria-label="Respuesta 2">
+                    <span class="answer-number">8</span>
+                    <span class="answer-label">Ocho nudos</span>
+                </button>
+                
+                <button class="answer-btn correct" data-answer="3" aria-label="Respuesta 3">
+                    <span class="answer-number">10</span>
+                    <span class="answer-label">Diez nudos</span>
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Progress Bar -->
+    <div class="progress-container">
+        <div class="progress-bar">
+            <div class="progress-fill" style="width: 30%"></div>
+        </div>
+        <span class="progress-text">Progreso del Nivel</span>
+    </div>
+    
+    <!-- Help Button -->
+    <button class="help-btn" onclick="showHelp()" aria-label="Mostrar ayuda">
+        <span class="help-icon">❓</span>
+    </button>
+</div>
+
+<!-- Help Modal -->
+<div class="modal" id="helpModal" style="display: none;">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3>Cómo jugar Khipu</h3>
+            <button class="modal-close" onclick="closeHelp()" aria-label="Cerrar ayuda">&times;</button>
+        </div>
+        <div class="modal-body">
+            <p>Los khipus eran sistemas de nudos usados por los incas para contar y llevar registros.</p>
+            <ul>
+                <li><strong>Nudos simples:</strong> Representan unidades individuales</li>
+                <li><strong>Nudos compuestos:</strong> Representan grupos de números</li>
+                <li><strong>Posición:</strong> La ubicación del nudo indica su valor</li>
+            </ul>
+            <p>Cuenta todos los nudos que veas en el khipu y selecciona la respuesta correcta.</p>
+        </div>
+    </div>
+</div>
+
+<!-- Level Data -->
+<script>
+window.GAME_DATA = {
+    game: 'khipu',
+    grade: {{ grade }},
+    level: {{ level }},
+    levels: {{ levels | tojson | safe }}
+
+};
+</script>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{{ url_for('static', filename='js/khipu.js') }}"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    initKhipuGame();
+    showGameHeader();
+    
+    // CHANGE HERE: Configuración específica del juego Khipu
+    console.log('🪢 Khipu game initialized for Grade {{ grade }}, Level {{ level }}');
+});
+</script>
+{% endblock %}

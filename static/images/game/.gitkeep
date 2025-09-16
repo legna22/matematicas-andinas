@@ -1,0 +1,25 @@
+# Directorio para assets de juegos
+# CHANGE HERE: Organizar en subdirectorios:
+# 
+# khipu/
+#   - nudos-simple.png
+#   - nudos-compuesto.png
+#   - cuerda-textura.png
+#
+# yupana/
+#   - ficha-pequena.png
+#   - ficha-mediana.png
+#   - ficha-grande.png
+#   - tablero-textura.png
+#
+# chacana/
+#   - patron-circulo.png
+#   - patron-triangulo.png
+#   - patron-cuadrado.png
+#   - patron-diamante.png
+
+# Especificaciones:
+# - Formato PNG con transparencia
+# - Tamaño: 64x64px para elementos pequeños
+# - Tamaño: 128x128px para elementos medianos
+# - Optimizar para web

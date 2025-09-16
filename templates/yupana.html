@@ -1,0 +1,166 @@
+{% extends "base.html" %}
+
+{% block title %}Yupana - Matemáticas Andinas{% endblock %}
+{% block game_title %}Yupana - Ábaco Andino{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/game.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/yupana.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="game-container yupana-container">
+    <!-- Game Background -->
+    <div class="game-background yupana-background"></div>
+    
+    <!-- Main Game Area -->
+    <div class="game-area">
+        <!-- Question Section -->
+        <div class="question-section">
+            <div class="question-pergamino">
+                <h2 class="question-title">Representa el número</h2>
+                <p class="question-desc" id="questionDesc">
+                    Usa las fichas para representar el número en la yupana
+                </p>
+                <div class="target-number">
+                    <span class="number-display" id="targetNumber">25</span>
+                </div>
+                <div class="question-info">
+                    <span class="grade-info">Grado: {{ grade }}</span>
+                    <span class="level-info">Nivel: {{ level }}</span>
+                    <span class="time-info" id="timeRemaining" style="display: none;">Tiempo: <span id="timeValue">--</span>s</span>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Yupana Board Area -->
+        <div class="yupana-area">
+            <div class="yupana-board">
+                <!-- Yupana Grid -->
+                <div class="yupana-grid" id="yupanaGrid">
+                    <!-- Centenas -->
+                    <div class="yupana-column centenas">
+                        <div class="column-header">100s</div>
+                        <div class="cell" data-value="500"></div>
+                        <div class="cell" data-value="300"></div>
+                        <div class="cell" data-value="200"></div>
+                        <div class="cell" data-value="100"></div>
+                    </div>
+                    
+                    <!-- Decenas -->
+                    <div class="yupana-column decenas">
+                        <div class="column-header">10s</div>
+                        <div class="cell" data-value="50"></div>
+                        <div class="cell" data-value="30"></div>
+                        <div class="cell" data-value="20"></div>
+                        <div class="cell" data-value="10"></div>
+                    </div>
+                    
+                    <!-- Unidades -->
+                    <div class="yupana-column unidades">
+                        <div class="column-header">1s</div>
+                        <div class="cell" data-value="5"></div>
+                        <div class="cell" data-value="3"></div>
+                        <div class="cell" data-value="2"></div>
+                        <div class="cell" data-value="1"></div>
+                    </div>
+                </div>
+                
+                <!-- Counter Pieces -->
+                <div class="pieces-area">
+                    <div class="piece-stack">
+                        <div class="piece available" draggable="true" data-type="small"></div>
+                        <div class="piece available" draggable="true" data-type="small"></div>
+                        <div class="piece available" draggable="true" data-type="small"></div>
+                        <div class="piece available" draggable="true" data-type="small"></div>
+                        <div class="piece available" draggable="true" data-type="small"></div>
+                    </div>
+                    <div class="piece-stack">
+                        <div class="piece available" draggable="true" data-type="medium"></div>
+                        <div class="piece available" draggable="true" data-type="medium"></div>
+                        <div class="piece available" draggable="true" data-type="medium"></div>
+                    </div>
+                    <div class="piece-stack">
+                        <div class="piece available" draggable="true" data-type="large"></div>
+                        <div class="piece available" draggable="true" data-type="large"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Answer Section -->
+        <div class="answer-section">
+            <div class="current-value">
+                <span class="value-label">Valor actual:</span>
+                <span class="value-number" id="currentValue">0</span>
+            </div>
+            <div class="action-buttons">
+                <button class="btn btn-secondary" onclick="clearBoard()" aria-label="Limpiar tablero">
+                    Limpiar
+                </button>
+                <button class="btn btn-primary" onclick="checkAnswer()" aria-label="Verificar respuesta">
+                    Verificar
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Progress Bar -->
+    <div class="progress-container">
+        <div class="progress-bar">
+            <div class="progress-fill" style="width: 45%"></div>
+        </div>
+        <span class="progress-text">Progreso del Nivel</span>
+    </div>
+    
+    <!-- Help Button -->
+    <button class="help-btn" onclick="showHelp()" aria-label="Mostrar ayuda">
+        <span class="help-icon">❓</span>
+    </button>
+</div>
+
+<!-- Help Modal -->
+<div class="modal" id="helpModal" style="display: none;">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3>Cómo usar la Yupana</h3>
+            <button class="modal-close" onclick="closeHelp()" aria-label="Cerrar ayuda">&times;</button>
+        </div>
+        <div class="modal-body">
+            <p>La yupana era un ábaco usado por las civilizaciones andinas para realizar cálculos.</p>
+            <ul>
+                <li><strong>Columnas:</strong> Representan unidades, decenas y centenas</li>
+                <li><strong>Fichas pequeñas:</strong> Valor de 1 en su columna</li>
+                <li><strong>Fichas medianas:</strong> Valor de 3 en su columna</li>
+                <li><strong>Fichas grandes:</strong> Valor de 5 en su columna</li>
+            </ul>
+            <p>Arrastra las fichas a las celdas para formar el número objetivo.</p>
+        </div>
+    </div>
+</div>
+
+<!-- Level Data -->
+<script>
+window.GAME_DATA = {
+    game: 'yupana',
+    grade: {{ grade }},
+    level: {{ level }},
+    levels: {{ levels | tojson | safe }}
+
+
+};
+</script>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{{ url_for('static', filename='js/yupana.js') }}"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    initYupanaGame();
+    showGameHeader();
+    
+    // CHANGE HERE: Configuración específica del juego Yupana
+    console.log('🧮 Yupana game initialized for Grade {{ grade }}, Level {{ level }}');
+});
+</script>
+{% endblock %}

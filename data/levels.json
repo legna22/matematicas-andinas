@@ -1,0 +1,248 @@
+{
+  "khipu": [
+    {
+      "grade": 1,
+      "level": 1,
+      "target_min": 1,
+      "target_max": 5,
+      "time": 0,
+      "desc": "Contar del 1 al 5 con nudos simples",
+      "difficulty": "facil",
+      "concepts": ["conteo", "números básicos"]
+    },
+    {
+      "grade": 1,
+      "level": 2,
+      "target_min": 6,
+      "target_max": 10,
+      "time": 60,
+      "desc": "Contar del 6 al 10 con nudos simples",
+      "difficulty": "facil",
+      "concepts": ["conteo", "números básicos"]
+    },
+    {
+      "grade": 2,
+      "level": 1,
+      "target_min": 10,
+      "target_max": 20,
+      "time": 90,
+      "desc": "Números del 10 al 20 con nudos compuestos",
+      "difficulty": "facil",
+      "concepts": ["decenas", "conteo avanzado"]
+    },
+    {
+      "grade": 2,
+      "level": 2,
+      "target_min": 20,
+      "target_max": 50,
+      "time": 120,
+      "desc": "Sumas simples usando khipu",
+      "difficulty": "medio",
+      "concepts": ["suma", "operaciones básicas"]
+    },
+    {
+      "grade": 3,
+      "level": 1,
+      "target_min": 50,
+      "target_max": 100,
+      "time": 150,
+      "desc": "Números hasta 100 con sistema decimal",
+      "difficulty": "medio",
+      "concepts": ["centenas", "sistema decimal"]
+    },
+    {
+      "grade": 3,
+      "level": 2,
+      "target_min": 10,
+      "target_max": 50,
+      "time": 180,
+      "desc": "Restas básicas con khipu",
+      "difficulty": "medio",
+      "concepts": ["resta", "operaciones básicas"]
+    },
+    {
+      "grade": 7,
+      "level": 1,
+      "target_min": 100,
+      "target_max": 1000,
+      "time": 300,
+      "desc": "Sistema numérico andino avanzado",
+      "difficulty": "dificil",
+      "concepts": ["sistema posicional", "números grandes"]
+    },
+    {
+      "grade": 8,
+      "level": 1,
+      "target_min": 50,
+      "target_max": 200,
+      "time": 240,
+      "desc": "Multiplicación usando técnicas de khipu",
+      "difficulty": "dificil",
+      "concepts": ["multiplicación", "algoritmos andinos"]
+    }
+  ],
+  "yupana": [
+    {
+      "grade": 1,
+      "level": 1,
+      "target_min": 1,
+      "target_max": 10,
+      "time": 0,
+      "desc": "Contar con fichas en la yupana básica",
+      "difficulty": "facil",
+      "concepts": ["conteo", "ábaco andino"]
+    },
+    {
+      "grade": 1,
+      "level": 2,
+      "target_min": 10,
+      "target_max": 20,
+      "time": 90,
+      "desc": "Representar números del 10 al 20",
+      "difficulty": "facil",
+      "concepts": ["representación numérica", "decenas"]
+    },
+    {
+      "grade": 2,
+      "level": 1,
+      "target_min": 5,
+      "target_max": 25,
+      "time": 120,
+      "desc": "Sumas simples en la yupana",
+      "difficulty": "medio",
+      "concepts": ["suma", "operaciones con ábaco"]
+    },
+    {
+      "grade": 2,
+      "level": 2,
+      "target_min": 10,
+      "target_max": 30,
+      "time": 150,
+      "desc": "Restas simples en la yupana",
+      "difficulty": "medio",
+      "concepts": ["resta", "operaciones con ábaco"]
+    },
+    {
+      "grade": 3,
+      "level": 1,
+      "target_min": 50,
+      "target_max": 100,
+      "time": 180,
+      "desc": "Números de dos dígitos completos",
+      "difficulty": "medio",
+      "concepts": ["números de dos dígitos", "valor posicional"]
+    },
+    {
+      "grade": 3,
+      "level": 2,
+      "target_min": 25,
+      "target_max": 75,
+      "time": 200,
+      "desc": "Sumas y restas combinadas",
+      "difficulty": "medio",
+      "concepts": ["operaciones mixtas", "resolución de problemas"]
+    },
+    {
+      "grade": 7,
+      "level": 1,
+      "target_min": 100,
+      "target_max": 500,
+      "time": 300,
+      "desc": "Sistema de cálculo andino avanzado",
+      "difficulty": "dificil",
+      "concepts": ["cálculos complejos", "sistema andino"]
+    },
+    {
+      "grade": 8,
+      "level": 1,
+      "target_min": 50,
+      "target_max": 300,
+      "time": 360,
+      "desc": "Multiplicación avanzada con yupana",
+      "difficulty": "dificil",
+      "concepts": ["multiplicación avanzada", "técnicas ancestrales"]
+    }
+  ],
+  "chacana": [
+    {
+      "grade": 1,
+      "level": 1,
+      "target_min": 3,
+      "target_max": 5,
+      "time": 0,
+      "desc": "Patrones simples de 3 y 4 elementos",
+      "difficulty": "facil",
+      "concepts": ["patrones", "formas geométricas"]
+    },
+    {
+      "grade": 1,
+      "level": 2,
+      "target_min": 4,
+      "target_max": 8,
+      "time": 120,
+      "desc": "Simetrías básicas en la chacana",
+      "difficulty": "facil",
+      "concepts": ["simetría", "equilibrio"]
+    },
+    {
+      "grade": 2,
+      "level": 1,
+      "target_min": 6,
+      "target_max": 12,
+      "time": 150,
+      "desc": "Patrones de crecimiento numérico",
+      "difficulty": "medio",
+      "concepts": ["secuencias", "crecimiento"]
+    },
+    {
+      "grade": 2,
+      "level": 2,
+      "target_min": 8,
+      "target_max": 16,
+      "time": 180,
+      "desc": "Divisiones en la cruz andina",
+      "difficulty": "medio",
+      "concepts": ["división", "partes iguales"]
+    },
+    {
+      "grade": 3,
+      "level": 1,
+      "target_min": 12,
+      "target_max": 24,
+      "time": 200,
+      "desc": "Fracciones usando la chacana",
+      "difficulty": "medio",
+      "concepts": ["fracciones", "partes del todo"]
+    },
+    {
+      "grade": 3,
+      "level": 2,
+      "target_min": 16,
+      "target_max": 32,
+      "time": 240,
+      "desc": "Proporciones y equilibrio",
+      "difficulty": "medio",
+      "concepts": ["proporciones", "equilibrio matemático"]
+    },
+    {
+      "grade": 7,
+      "level": 1,
+      "target_min": 50,
+      "target_max": 100,
+      "time": 360,
+      "desc": "Geometría sagrada andina",
+      "difficulty": "dificil",
+      "concepts": ["geometría avanzada", "cosmovisión andina"]
+    },
+    {
+      "grade": 8,
+      "level": 1,
+      "target_min": 75,
+      "target_max": 150,
+      "time": 420,
+      "desc": "Matemáticas cósmicas de la chacana",
+      "difficulty": "dificil",
+      "concepts": ["matemáticas cósmicas", "filosofía numérica"]
+    }
+  ]
+}
