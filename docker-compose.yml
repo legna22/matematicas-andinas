@@ -1,33 +1,15 @@
-# Matemáticas Andinas - Docker Compose Configuration
 version: '3.8'
 
 services:
   matematicas-andinas:
     build: .
     ports:
-      # CHANGE HERE: Puerto de la aplicación
       - "8000:8000"
     volumes:
-      # CHANGE HERE: Volúmenes para desarrollo
       - ./data:/app/data
       - ./static:/app/static
       - ./templates:/app/templates
     environment:
-      - FLASK_ENV=development
-      - FLASK_DEBUG=1
+      FLASK_ENV: development
+      FLASK_DEBUG: 1
     restart: unless-stopped
-
-  # Uncomment for production with nginx
-  # nginx:
-  #   image: nginx:alpine
-  #   ports:
-  #     - "80:80"
-  #   volumes:
-  #     - ./nginx.conf:/etc/nginx/nginx.conf
-  #   depends_on:
-  #     - matematicas-andinas
-
-  environment:
-  - FLASK_APP=app.py
-  - FLASK_ENV=development
-  - FLASK_DEBUG=1

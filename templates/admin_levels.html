@@ -128,7 +128,8 @@
 </div>
 
 <script>
-let currentLevels = {{ levels | tojsonfilter | safe }};
+let currentLevels = {{ levels | tojson | safe }}
+;
 
 document.addEventListener('DOMContentLoaded', function() {
     initLevelsEditor();
