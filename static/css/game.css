@@ -16,6 +16,15 @@
     z-index: 1000;
     box-shadow: var(--shadow-md);
 }
+.logo-khipu {
+    width: 60px;
+    height: 60px;
+    background: url("/static/images/backgrounds/logouno.png") no-repeat center center;
+    background-size: contain;
+    border-radius: 50%; /* opcional si quieres círculo */
+}
+
+
 
 .header-content {
     display: flex;
@@ -104,7 +113,7 @@
     position: relative;
     z-index: 1;
     width: 100%;
-    max-width: 900px;
+    max-width: 50%;
     padding: var(--spacing-xl);
 }
 
@@ -115,6 +124,13 @@
 
 .logo-container {
     margin-bottom: var(--spacing-lg);
+    background: url(../images/backgrounds/fondotitulo.png) center center;
+    background-size: cover;
+    border-radius: 30px;
+    min-height: 17vh;
+    align-items: center;
+    padding-top: 2%;
+    padding-bottom: 2%;
 }
 
 .main-logo {
@@ -127,25 +143,28 @@
     font-size: 3.5rem;
     margin-bottom: var(--spacing-md);
     text-shadow: 2px 2px 4px var(--color-shadow);
-    color: var(--color-earth-brown);
+    color: var(--color-whidth);
 }
 
 .home-subtitle {
     font-size: var(--font-size-xl);
-    color: var(--color-golden-sun);
+    color: var(--color-whidth);
     font-weight: 600;
     text-shadow: 1px 1px 2px var(--color-shadow);
 }
 
 /* Pergamino de selección */
 .pergamino-container {
-    background: url(../images/backgrounds/fondomenu.png) center center;
-    background-size: cover;
-    border-radius: 20px;
-    padding: var(--spacing-xxl);
-    box-shadow: var(--shadow-lg);
-    border: 3px solid var(--color-earth-brown);
-    position: relative;
+     position: relative;
+    max-width: 900px;              /* ancho máximo */
+    margin: 40px auto;             /* centrado con espacio arriba */
+        padding: 10%;      /* espacio interno para que no tape el borde */
+    background: url("../images/backgrounds/pergamino.png") no-repeat center center;
+    background-size: cover;        /* hace que se adapte */
+    border-radius: 20px;           /* bordes suavizados (opcional) */
+    text-align: center;
+    font-family: 'Cinzel', serif;  /* tipografía estilo antiguo */
+    color: #5b2c06;     
 }
 
 .pergamino-container::before {
@@ -155,7 +174,7 @@
     left: -5px;
     right: -5px;
     bottom: -5px;
-    background: linear-gradient(45deg, var(--color-golden-sun), var(--color-terracotta));
+    /* background: linear-gradient(45deg, var(--color-golden-sun), var(--color-terracotta)); */
     border-radius: 25px;
     z-index: -1;
     opacity: 0.3;
@@ -194,7 +213,7 @@
 
 .game-option.seleccionado {
     border-color: var(--color-golden-sun);
-    background: rgba(210, 105, 30, 0.1);
+    background: rgb(255 255 255);
     box-shadow: var(--shadow-glow);
 }
 
@@ -372,6 +391,9 @@
     position: relative;
     min-height: calc(100vh - 80px);
     padding: var(--spacing-lg);
+    background: url(../images/backgrounds/inicio.png)center center;
+    background-attachment: fixed;
+    background-size: cover;
 }
 
 .game-background {
@@ -407,7 +429,8 @@
 
 /* Sección de preguntas */
 .question-section {
-    background: var(--color-light-parchment);
+    background: url(../images/backgrounds/fondotitulo.png) center center;
+    background-size: cover;
     border-radius: var(--border-radius-lg);
     padding: var(--spacing-xl);
     box-shadow: var(--shadow-md);
@@ -421,12 +444,12 @@
 .question-title {
     font-size: var(--font-size-2xl);
     margin-bottom: var(--spacing-md);
-    color: var(--color-earth-brown);
+    color: var(--color-whidth);
 }
 
 .question-desc {
     font-size: var(--font-size-lg);
-    color: #666;
+    color: var(--color-whidth);
     margin-bottom: var(--spacing-lg);
 }
 
@@ -435,7 +458,7 @@
     justify-content: center;
     gap: var(--spacing-xl);
     font-size: var(--font-size-sm);
-    color: var(--color-earth-brown);
+    color: var(--color-whidth);
 }
 
 /* Overlays */
@@ -517,6 +540,7 @@
     border-radius: var(--border-radius-lg);
     box-shadow: var(--shadow-md);
     z-index: 100;
+    width: 15%;
 }
 
 .progress-bar {

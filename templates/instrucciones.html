@@ -1,0 +1,437 @@
+{% extends "base.html" %}
+
+{% block title %}Cómo Jugar - Matemáticas Andinas{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/game.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/instrucciones.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="instructions-container">
+    <!-- Background -->
+    <div class="instructions-background" style="background-image: url('{{ url_for('static', filename='images/backgrounds/inicio.png') }}');">
+        <div class="instructions-overlay"></div>
+    </div>
+
+    <!-- Header -->
+    <header class="instructions-header">
+        <div class="header-content">
+            <button class="btn-back" onclick="goHome()" aria-label="Volver al inicio">
+                <span class="back-icon">←</span>
+                <span class="back-text">Volver</span>
+            </button>
+            <h1 class="instructions-title">¿Cómo Jugar?</h1>
+            <div class="header-subtitle">
+                <p>Aprende a usar los instrumentos matemáticos andinos</p>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <div class="instructions-content">
+        <!-- Game Selection Tabs -->
+        <div class="game-tabs">
+            <button class="tab-btn active" data-game="khipu" aria-label="Instrucciones Khipu">
+                <div class="tab-icon">🪢</div>
+                <span class="tab-name">Khipu</span>
+            </button>
+            <button class="tab-btn" data-game="yupana" aria-label="Instrucciones Yupana">
+                <div class="tab-icon">🧮</div>
+                <span class="tab-name">Yupana</span>
+            </button>
+            <button class="tab-btn" data-game="chacana" aria-label="Instrucciones Chacana">
+                <div class="tab-icon">✚</div>
+                <span class="tab-name">Chacana</span>
+            </button>
+        </div>
+
+        <!-- Khipu Instructions -->
+        <div class="instruction-panel active" data-game="khipu">
+            <div class="panel-content">
+                <div class="game-intro">
+                    <h2>🪢 Khipu - Sistema de Nudos</h2>
+                    <p class="game-description">
+                        Los khipus eran sistemas de cuerdas con nudos que los incas usaban para contar, 
+                        llevar registros y comunicarse. Cada nudo tenía un significado matemático específico.
+                    </p>
+                </div>
+
+                <div class="instruction-steps">
+                    <div class="step-card">
+                        <div class="step-number">1</div>
+                        <div class="step-content">
+                            <h3>Observa el Khipu</h3>
+                            <p>Mira atentamente la cuerda principal y las cuerdas colgantes con sus nudos.</p>
+                            <div class="visual-demo khipu-demo">
+                                <div class="demo-khipu">
+                                    <div class="main-cord"></div>
+                                    <div class="hanging-cords">
+                                        <div class="cord">
+                                            <div class="knot simple animate-knot" style="animation-delay: 0.5s;"></div>
+                                            <div class="knot simple animate-knot" style="animation-delay: 1s;"></div>
+                                        </div>
+                                        <div class="cord">
+                                            <div class="knot compound animate-knot" style="animation-delay: 1.5s;"></div>
+                                        </div>
+                                        <div class="cord">
+                                            <div class="knot simple animate-knot" style="animation-delay: 2s;"></div>
+                                            <div class="knot simple animate-knot" style="animation-delay: 2.5s;"></div>
+                                            <div class="knot simple animate-knot" style="animation-delay: 3s;"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="step-card">
+                        <div class="step-number">2</div>
+                        <div class="step-content">
+                            <h3>Cuenta los Nudos</h3>
+                            <p>Cada nudo representa una unidad. Cuenta todos los nudos que veas en el khipu.</p>
+                            <div class="counting-demo">
+                                <div class="count-animation">
+                                    <div class="counter-display">Total: <span id="knotCounter">0</span></div>
+                                    <div class="count-explanation">
+                                        <div class="knot-legend">
+                                            <div class="legend-item">
+                                                <div class="knot simple"></div>
+                                                <span>Nudo simple = 1</span>
+                                            </div>
+                                            <div class="legend-item">
+                                                <div class="knot compound"></div>
+                                                <span>Nudo compuesto = 1</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="step-card">
+                        <div class="step-number">3</div>
+                        <div class="step-content">
+                            <h3>Selecciona tu Respuesta</h3>
+                            <p>Elige la opción que corresponda al número total de nudos que contaste.</p>
+                            <div class="answer-demo">
+                                <div class="demo-answers">
+                                    <button class="demo-answer-btn">
+                                        <span class="answer-number">5</span>
+                                        <span class="answer-label">Cinco nudos</span>
+                                    </button>
+                                    <button class="demo-answer-btn correct">
+                                        <span class="answer-number">6</span>
+                                        <span class="answer-label">Seis nudos</span>
+                                    </button>
+                                    <button class="demo-answer-btn">
+                                        <span class="answer-number">7</span>
+                                        <span class="answer-label">Siete nudos</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="play-section">
+                    <button class="btn-play-game" onclick="playGame('khipu')" aria-label="Jugar Khipu">
+                        <span class="play-icon">▶️</span>
+                        <span class="play-text">¡Jugar Khipu!</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Yupana Instructions -->
+        <div class="instruction-panel" data-game="yupana">
+            <div class="panel-content">
+                <div class="game-intro">
+                    <h2>🧮 Yupana - Ábaco Andino</h2>
+                    <p class="game-description">
+                        La yupana era un ábaco usado por las civilizaciones andinas para realizar cálculos 
+                        matemáticos complejos usando un sistema decimal con fichas de diferentes valores.
+                    </p>
+                </div>
+
+                <div class="instruction-steps">
+                    <div class="step-card">
+                        <div class="step-number">1</div>
+                        <div class="step-content">
+                            <h3>Conoce las Fichas</h3>
+                            <p>Cada tipo de ficha tiene un valor diferente que debes conocer.</p>
+                            <div class="pieces-demo">
+                                <div class="piece-showcase">
+                                    <div class="showcase-item">
+                                        <div class="piece small animate-piece" style="animation-delay: 0.5s;"></div>
+                                        <span class="piece-value">Vale 1</span>
+                                    </div>
+                                    <div class="showcase-item">
+                                        <div class="piece medium animate-piece" style="animation-delay: 1s;"></div>
+                                        <span class="piece-value">Vale 3</span>
+                                    </div>
+                                    <div class="showcase-item">
+                                        <div class="piece large animate-piece" style="animation-delay: 1.5s;"></div>
+                                        <span class="piece-value">Vale 5</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="step-card">
+                        <div class="step-number">2</div>
+                        <div class="step-content">
+                            <h3>Arrastra las Fichas</h3>
+                            <p>Toma las fichas y colócalas en el tablero para formar el número objetivo.</p>
+                            <div class="drag-demo">
+                                <div class="demo-board">
+                                    <div class="demo-column">
+                                        <div class="column-header">10s</div>
+                                        <div class="demo-cell" data-value="10">
+                                            <div class="piece small demo-placed"></div>
+                                        </div>
+                                        <div class="demo-cell" data-value="10"></div>
+                                    </div>
+                                    <div class="demo-column">
+                                        <div class="column-header">1s</div>
+                                        <div class="demo-cell" data-value="5">
+                                            <div class="piece large demo-placed"></div>
+                                        </div>
+                                        <div class="demo-cell" data-value="1"></div>
+                                    </div>
+                                </div>
+                                <div class="drag-arrow">
+                                    <span class="arrow-text">Arrastra aquí</span>
+                                    <div class="arrow-animation">↗</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="step-card">
+                        <div class="step-number">3</div>
+                        <div class="step-content">
+                            <h3>Forma el Número</h3>
+                            <p>Combina las fichas hasta que el valor total coincida con el número objetivo.</p>
+                            <div class="calculation-demo">
+                                <div class="calc-display">
+                                    <div class="target-number">Objetivo: <span class="target">15</span></div>
+                                    <div class="current-value">Tu valor: <span class="current">15</span></div>
+                                    <div class="success-indicator">¡Correcto! ✓</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="play-section">
+                    <button class="btn-play-game" onclick="playGame('yupana')" aria-label="Jugar Yupana">
+                        <span class="play-icon">▶️</span>
+                        <span class="play-text">¡Jugar Yupana!</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Chacana Instructions -->
+        <div class="instruction-panel" data-game="chacana">
+            <div class="panel-content">
+                <div class="game-intro">
+                    <h2>✚ Chacana - Cruz Andina</h2>
+                    <p class="game-description">
+                        La chacana es la cruz andina sagrada que representa el equilibrio y la armonía. 
+                        En este juego aprenderás sobre simetría y patrones geométricos.
+                    </p>
+                </div>
+
+                <div class="instruction-steps">
+                    <div class="step-card">
+                        <div class="step-number">1</div>
+                        <div class="step-content">
+                            <h3>Observa el Patrón</h3>
+                            <p>Mira la chacana y identifica qué elementos faltan para completar la simetría.</p>
+                            <div class="pattern-demo">
+                                <div class="demo-chacana">
+                                    <div class="chacana-grid">
+                                        <div class="demo-cell filled">●</div>
+                                        <div class="demo-cell empty animate-missing" style="animation-delay: 1s;"></div>
+                                        <div class="demo-cell filled">●</div>
+                                        <div class="demo-cell center">✚</div>
+                                        <div class="demo-cell filled">●</div>
+                                        <div class="demo-cell empty animate-missing" style="animation-delay: 1.5s;"></div>
+                                        <div class="demo-cell filled">●</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="step-card">
+                        <div class="step-number">2</div>
+                        <div class="step-content">
+                            <h3>Selecciona un Patrón</h3>
+                            <p>Elige el símbolo correcto de las opciones disponibles.</p>
+                            <div class="pattern-options-demo">
+                                <div class="demo-options">
+                                    <div class="pattern-option">
+                                        <div class="pattern-preview circle"></div>
+                                        <span>Círculo</span>
+                                    </div>
+                                    <div class="pattern-option selected">
+                                        <div class="pattern-preview triangle"></div>
+                                        <span>Triángulo</span>
+                                    </div>
+                                    <div class="pattern-option">
+                                        <div class="pattern-preview square"></div>
+                                        <span>Cuadrado</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="step-card">
+                        <div class="step-number">3</div>
+                        <div class="step-content">
+                            <h3>Completa la Simetría</h3>
+                            <p>Haz clic en las celdas vacías para colocar el patrón y crear armonía perfecta.</p>
+                            <div class="symmetry-demo">
+                                <div class="demo-completion">
+                                    <div class="before-after">
+                                        <div class="demo-state">
+                                            <h4>Antes</h4>
+                                            <div class="mini-chacana incomplete">
+                                                <div class="mini-cell filled">●</div>
+                                                <div class="mini-cell empty">?</div>
+                                                <div class="mini-cell filled">●</div>
+                                            </div>
+                                        </div>
+                                        <div class="arrow-transform">→</div>
+                                        <div class="demo-state">
+                                            <h4>Después</h4>
+                                            <div class="mini-chacana complete">
+                                                <div class="mini-cell filled">●</div>
+                                                <div class="mini-cell filled success">▲</div>
+                                                <div class="mini-cell filled">●</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="play-section">
+                    <button class="btn-play-game" onclick="playGame('chacana')" aria-label="Jugar Chacana">
+                        <span class="play-icon">▶️</span>
+                        <span class="play-text">¡Jugar Chacana!</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bottom Navigation -->
+    <div class="bottom-navigation">
+        <button class="btn btn-secondary" onclick="goHome()">
+            <span class="btn-icon">🏠</span>
+            Volver al Inicio
+        </button>
+        <button class="btn btn-primary" onclick="goToGameSelection()">
+            <span class="btn-icon">🎮</span>
+            Elegir Juego
+        </button>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    initInstructionsPage();
+    console.log('📚 Instructions page loaded');
+});
+
+function initInstructionsPage() {
+    // Tab switching functionality
+    const tabButtons = document.querySelectorAll('.tab-btn');
+    const instructionPanels = document.querySelectorAll('.instruction-panel');
+    
+    tabButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            const targetGame = this.dataset.game;
+            
+            // Remove active class from all tabs and panels
+            tabButtons.forEach(btn => btn.classList.remove('active'));
+            instructionPanels.forEach(panel => panel.classList.remove('active'));
+            
+            // Add active class to clicked tab and corresponding panel
+            this.classList.add('active');
+            document.querySelector(`[data-game="${targetGame}"].instruction-panel`).classList.add('active');
+            
+            // Restart animations
+            restartAnimations(targetGame);
+        });
+    });
+    
+    // Start initial animations
+    setTimeout(() => {
+        startKhipuAnimations();
+    }, 500);
+}
+
+function startKhipuAnimations() {
+    // Animate knot counting
+    let count = 0;
+    const counter = document.getElementById('knotCounter');
+    const knots = document.querySelectorAll('.animate-knot');
+    
+    knots.forEach((knot, index) => {
+        setTimeout(() => {
+            knot.classList.add('counted');
+            count++;
+            counter.textContent = count;
+        }, (index + 1) * 800);
+    });
+}
+
+function restartAnimations(gameType) {
+    // Remove existing animation classes
+    document.querySelectorAll('.animate-knot').forEach(knot => {
+        knot.classList.remove('counted');
+    });
+    
+    // Reset counter
+    const counter = document.getElementById('knotCounter');
+    if (counter) counter.textContent = '0';
+    
+    // Start animations based on game type
+    if (gameType === 'khipu') {
+        setTimeout(startKhipuAnimations, 500);
+    }
+}
+
+function playGame(gameType) {
+    // Get current grade selection from localStorage or default
+    const savedGrade = localStorage.getItem('matematicas_andinas_selected_grade') || '1';
+    const url = `/${gameType}?grade=${savedGrade}&level=1`;
+    
+    // Show loading and navigate
+    showLoadingOverlay();
+    setTimeout(() => {
+        window.location.href = url;
+    }, 500);
+}
+
+function goToGameSelection() {
+    showLoadingOverlay();
+    setTimeout(() => {
+        window.location.href = '/';
+    }, 300);
+}
+
+// CHANGE HERE: Personalizar animaciones y efectos
+console.log('📚 Instructions page with animations ready');
+</script>
+{% endblock %}
