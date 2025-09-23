@@ -81,6 +81,10 @@ def admin_levels():
     levels_data = load_levels()
     return render_template('admin_levels.html', levels=levels_data)
 
+@app.route('/instrucciones')
+def instrucciones():
+    return render_template('instrucciones.html')
+
 @app.route('/api/levels', methods=['GET', 'POST'])
 def api_levels():
     """API para gestionar niveles"""
@@ -105,7 +109,13 @@ def not_found(error):
     """Página de error 404 personalizada"""
     return render_template('404.html'), 404
 
+
+
 if __name__ == '__main__':
     # CHANGE HERE: Configuración del servidor
     # Para desarrollo local, cambiar host a 'localhost'
     app.run(host="0.0.0.0", port=8000, debug=True)
+
+    from flask import render_template
+
+

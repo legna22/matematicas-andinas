@@ -16,13 +16,7 @@
     z-index: 1000;
     box-shadow: var(--shadow-md);
 }
-.logo-khipu {
-    width: 60px;
-    height: 60px;
-    background: url("/static/images/backgrounds/logouno.png") no-repeat center center;
-    background-size: contain;
-    border-radius: 50%; /* opcional si quieres círculo */
-}
+
 
 
 
