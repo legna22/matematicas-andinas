@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Khipu - Sistema de Nudos Inca</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/kipu.css') }}">
+</head>
+<body>
+  <div class="game-container">
+    <h1 class="title">🔗 Khipu Inca 🔗</h1>
+    <p class="subtitle">Sistema de Registro Numérico de los Incas</p>
+    
+    <div class="info-panel">
+      <div class="current-number">Número Actual: <span id="currentNumber">0</span></div>
+      <div class="target-number">Objetivo: <span id="targetNumber">--</span></div>
+    </div>
+
+    <div class="difficulty-selector">
+      <span style="color: #8B4513; font-weight: bold; font-size: 1.1em;">Dificultad: </span>
+      <button class="difficulty-btn active" onclick="setDifficulty('facil')">Fácil (1-50)</button>
+      <button class="difficulty-btn" onclick="setDifficulty('medio')">Medio (1-200)</button>
+      <button class="difficulty-btn" onclick="setDifficulty('dificil')">Difícil (1-999)</button>
+    </div>
+
+    <div class="khipu-area">
+      <div class="cord-container">
+        <div class="cord" onclick="addKnot(0)">
+          <div class="cord-label">Centenas<br><span class="cord-value">(×100)</span></div>
+          <div class="cord-line" id="cord0"></div>
+          <div class="knot-count" id="count0">0</div>
+        </div>
+        <div class="cord" onclick="addKnot(1)">
+          <div class="cord-label">Decenas<br><span class="cord-value">(×10)</span></div>
+          <div class="cord-line" id="cord1"></div>
+          <div class="knot-count" id="count1">0</div>
+        </div>
+        <div class="cord" onclick="addKnot(2)">
+          <div class="cord-label">Unidades<br><span class="cord-value">(×1)</span></div>
+          <div class="cord-line" id="cord2"></div>
+          <div class="knot-count" id="count2">0</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="instructions">
+      <strong>🎯 Instrucciones:</strong> Haz clic en las cuerdas para añadir cuentas coloridas y formar el número objetivo.
+      <br>💫 Cada cuerda puede tener máximo 9 cuentas. ¡Al llegar a 10, se reinicia y pasa valor a la siguiente!
+    </div>
+
+    <div class="controls">
+      <button class="btn btn-success" onclick="generateTarget()">🎯 Nuevo Objetivo</button>
+      <button class="btn" onclick="reset()">🔄 Reiniciar</button>
+      <button class="btn btn-danger" onclick="removeKnot()">➖ Quitar Cuenta</button>
+      <button class="btn" onclick="showHint()">💡 Pista</button>
+    </div>
+
+    <div class="score-panel">
+      <div class="score-item">
+        <div class="score-value" id="score">0</div>
+        <div class="score-label">Puntuación</div>
+      </div>
+      <div class="score-item">
+        <div class="score-value" id="streak">0</div>
+        <div class="score-label">Racha</div>
+      </div>
+      <div class="score-item">
+        <div class="score-value" id="attempts">0</div>
+        <div class="score-label">Intentos</div>
+      </div>
+    </div>
+
+    <div id="achievement" class="achievement" style="display: none;"></div>
+  </div>
+
+  <script src="{{ url_for('static', filename='js/kipu.js') }}"></script>
+</body>
+</html>

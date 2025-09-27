@@ -240,16 +240,16 @@ class TutorialManager {
             characterImage.className = `character-image ${currentStepData.animation || 'fadeIn'}`;
             
             // CHANGE HERE: Reemplazar emojis con imágenes reales cuando estén disponibles
-            // const imagePath = `/static/images/characters/${currentStepData.image}.png`;
-            // characterImage.innerHTML = `<img src="${imagePath}" alt="${this.tutorialData.character}" class="character-img">`;
+            const imagePath = `/static/images/characters/${currentStepData.image}.png`;
+            characterImage.innerHTML = `<img src="${imagePath}" alt="${this.tutorialData.character}" class="character-img">`;
             
             // Por ahora usamos emojis como placeholder
-            const characterEmojis = {
-                khipu: '👦',
-                yupana: '👧',
-                chacana: '🧙‍♂️'
-            };
-            characterImage.innerHTML = `<div class="character-placeholder">${characterEmojis[this.currentGame] || '👦'}</div>`;
+            // const characterEmojis = {
+            //     khipu: '👦',
+            //     yupana: '👧',
+            //     chacana: '🧙‍♂️'
+            // };
+            // characterImage.innerHTML = `<div class="character-placeholder">${characterEmojis[this.currentGame] || '👦'}</div>`;
         }
         
         // Actualizar botón siguiente

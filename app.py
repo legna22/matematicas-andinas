@@ -46,6 +46,11 @@ def khipu():
                          level=level,
                          levels=levels_data.get('khipu', []))
 
+@app.route('/kipu')
+def kipu():
+    return render_template('kipu.html')
+
+
 @app.route('/yupana')
 def yupana():
     """Juego Yupana - Ábaco andino"""
