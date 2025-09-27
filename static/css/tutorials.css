@@ -1,0 +1,524 @@
+/**
+ * Matemáticas Andinas - Tutorial Styles
+ * Estilos para el sistema de tutoriales narrativos
+ */
+
+/* Overlay principal */
+.tutorial-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(5px);
+    z-index: 10000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    padding: 20px;
+}
+
+.tutorial-overlay.show {
+    opacity: 1;
+}
+
+/* Container principal */
+.tutorial-container {
+    position: relative;
+    max-width: 900px;
+    width: 100%;
+    max-height: 90vh;
+    display: flex;
+    align-items: center;
+    gap: 30px;
+    animation: tutorialEnter 0.6s ease-out;
+}
+
+@keyframes tutorialEnter {
+    from {
+        opacity: 0;
+        transform: translateY(50px) scale(0.9);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+/* Fondo decorativo */
+.tutorial-background {
+    position: absolute;
+    top: -20px;
+    left: -20px;
+    right: -20px;
+    bottom: -20px;
+    background: url('../images/backgrounds/pergamino.png') center center;
+    background-size: cover;
+    border-radius: 20px;
+    opacity: 0.9;
+    z-index: -1;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+}
+
+/* Contenido principal */
+.tutorial-content {
+    display: flex;
+    align-items: center;
+    gap: 30px;
+    width: 100%;
+    padding: 40px;
+    position: relative;
+    z-index: 1;
+}
+
+/* Sección del personaje */
+.character-section {
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+}
+
+.character-image {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--color-golden-sun), var(--color-terracotta));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    border: 4px solid var(--color-light-parchment);
+    position: relative;
+    overflow: hidden;
+}
+
+.character-placeholder {
+    font-size: 4rem;
+    filter: drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.3));
+}
+
+.character-name {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: var(--color-earth-brown);
+    text-align: center;
+    background: rgba(255, 255, 255, 0.9);
+    padding: 8px 16px;
+    border-radius: 20px;
+    border: 2px solid var(--color-golden-sun);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+/* Animaciones del personaje */
+.character-image.fadeIn {
+    animation: characterFadeIn 0.8s ease-out;
+}
+
+.character-image.bounce {
+    animation: characterBounce 1s ease-in-out;
+}
+
+.character-image.pulse {
+    animation: characterPulse 1.5s ease-in-out infinite;
+}
+
+.character-image.wave {
+    animation: characterWave 2s ease-in-out;
+}
+
+.character-image.slideIn {
+    animation: characterSlideIn 0.8s ease-out;
+}
+
+.character-image.rotate {
+    animation: characterRotate 1s ease-in-out;
+}
+
+.character-image.glow {
+    animation: characterGlow 2s ease-in-out;
+}
+
+.character-image.blessing {
+    animation: characterBlessing 2s ease-in-out;
+}
+
+@keyframes characterFadeIn {
+    from { opacity: 0; transform: scale(0.8); }
+    to { opacity: 1; transform: scale(1); }
+}
+
+@keyframes characterBounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+}
+
+@keyframes characterPulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+}
+
+@keyframes characterWave {
+    0%, 100% { transform: rotate(0deg); }
+    25% { transform: rotate(-5deg); }
+    75% { transform: rotate(5deg); }
+}
+
+@keyframes characterSlideIn {
+    from { transform: translateX(-50px); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; }
+}
+
+@keyframes characterRotate {
+    from { transform: rotate(-10deg); }
+    to { transform: rotate(0deg); }
+}
+
+@keyframes characterGlow {
+    0%, 100% { box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3); }
+    50% { box-shadow: 0 10px 30px rgba(210, 105, 30, 0.6), 0 0 40px rgba(210, 105, 30, 0.4); }
+}
+
+@keyframes characterBlessing {
+    0%, 100% { transform: scale(1); filter: brightness(1); }
+    50% { transform: scale(1.02); filter: brightness(1.1); }
+}
+
+/* Sección del diálogo */
+.dialog-section {
+    flex-grow: 1;
+    max-width: 500px;
+}
+
+.dialog-box {
+    background: rgba(255, 248, 220, 0.95);
+    border: 3px solid var(--color-earth-brown);
+    border-radius: 20px;
+    padding: 30px;
+    position: relative;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+}
+
+/* Globo de diálogo */
+.dialog-box::before {
+    content: '';
+    position: absolute;
+    left: -15px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 0;
+    height: 0;
+    border-top: 15px solid transparent;
+    border-bottom: 15px solid transparent;
+    border-right: 15px solid var(--color-earth-brown);
+}
+
+.dialog-box::after {
+    content: '';
+    position: absolute;
+    left: -12px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 0;
+    height: 0;
+    border-top: 12px solid transparent;
+    border-bottom: 12px solid transparent;
+    border-right: 12px solid rgba(255, 248, 220, 0.95);
+}
+
+.dialog-title {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: var(--color-earth-brown);
+    margin-bottom: 15px;
+    text-align: center;
+    font-family: var(--font-family-headings);
+}
+
+.dialog-text {
+    font-size: 1.1rem;
+    line-height: 1.6;
+    color: #444;
+    margin-bottom: 25px;
+    text-align: justify;
+    min-height: 80px;
+}
+
+@keyframes textFadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Indicadores de progreso */
+.dialog-progress {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 25px;
+}
+
+.progress-dots {
+    display: flex;
+    gap: 8px;
+}
+
+.progress-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: #ccc;
+    transition: all 0.3s ease;
+}
+
+.progress-dot.active {
+    background: var(--color-golden-sun);
+    transform: scale(1.2);
+    box-shadow: 0 0 10px rgba(210, 105, 30, 0.5);
+}
+
+.progress-dot.completed {
+    background: var(--color-success);
+}
+
+/* Botones del diálogo */
+.dialog-buttons {
+    display: flex;
+    justify-content: space-between;
+    gap: 15px;
+}
+
+.btn-skip,
+.btn-next {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 25px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    min-height: 48px;
+    min-width: 120px;
+    justify-content: center;
+}
+
+.btn-skip {
+    background: rgba(139, 69, 19, 0.1);
+    color: var(--color-earth-brown);
+    border: 2px solid var(--color-earth-brown);
+}
+
+.btn-skip:hover {
+    background: var(--color-earth-brown);
+    color: white;
+    transform: translateY(-2px);
+}
+
+.btn-next {
+    background: linear-gradient(135deg, var(--color-golden-sun), var(--color-terracotta));
+    color: white;
+    box-shadow: 0 4px 12px rgba(210, 105, 30, 0.3);
+}
+
+.btn-next:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(210, 105, 30, 0.4);
+}
+
+.btn-icon {
+    font-size: 1.1rem;
+}
+
+/* Decoraciones */
+.tutorial-decorations {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    pointer-events: none;
+    z-index: -1;
+}
+
+.decoration {
+    position: absolute;
+    font-size: 2rem;
+    opacity: 0.3;
+    animation: decorationFloat 6s ease-in-out infinite;
+}
+
+.decoration-1 {
+    top: 10%;
+    left: 5%;
+    animation-delay: 0s;
+}
+
+.decoration-2 {
+    top: 15%;
+    right: 10%;
+    animation-delay: 2s;
+}
+
+.decoration-3 {
+    bottom: 20%;
+    left: 8%;
+    animation-delay: 4s;
+}
+
+.decoration-4 {
+    bottom: 15%;
+    right: 5%;
+    animation-delay: 1s;
+}
+
+@keyframes decorationFloat {
+    0%, 100% { transform: translateY(0px) rotate(0deg); }
+    50% { transform: translateY(-10px) rotate(5deg); }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .tutorial-container {
+        flex-direction: column;
+        gap: 20px;
+        max-height: 95vh;
+        overflow-y: auto;
+    }
+    
+    .tutorial-content {
+        flex-direction: column;
+        padding: 20px;
+        gap: 20px;
+    }
+    
+    .character-image {
+        width: 120px;
+        height: 120px;
+    }
+    
+    .character-placeholder {
+        font-size: 3rem;
+    }
+    
+    .dialog-box {
+        padding: 20px;
+    }
+    
+    .dialog-box::before,
+    .dialog-box::after {
+        left: 50%;
+        top: -15px;
+        transform: translateX(-50%);
+        border-left: 15px solid transparent;
+        border-right: 15px solid transparent;
+        border-top: none;
+        border-bottom: 15px solid var(--color-earth-brown);
+    }
+    
+    .dialog-box::after {
+        top: -12px;
+        border-bottom-color: rgba(255, 248, 220, 0.95);
+    }
+    
+    .dialog-text {
+        font-size: 1rem;
+        min-height: 60px;
+        text-align: left;
+    }
+    
+    .dialog-buttons {
+        flex-direction: column;
+    }
+    
+    .btn-skip,
+    .btn-next {
+        width: 100%;
+    }
+}
+
+@media (max-width: 480px) {
+    .tutorial-overlay {
+        padding: 10px;
+    }
+    
+    .character-image {
+        width: 100px;
+        height: 100px;
+    }
+    
+    .character-placeholder {
+        font-size: 2.5rem;
+    }
+    
+    .dialog-title {
+        font-size: 1.3rem;
+    }
+    
+    .dialog-text {
+        font-size: 0.95rem;
+    }
+    
+    .btn-skip,
+    .btn-next {
+        padding: 10px 16px;
+        font-size: 0.9rem;
+    }
+}
+
+/* Accesibilidad */
+@media (prefers-reduced-motion: reduce) {
+    .tutorial-overlay,
+    .tutorial-container,
+    .character-image,
+    .dialog-text,
+    .decoration {
+        animation: none !important;
+        transition: none !important;
+    }
+    
+    .character-image {
+        transform: none !important;
+    }
+}
+
+/* Alto contraste */
+@media (prefers-contrast: high) {
+    .dialog-box {
+        background: white;
+        border-width: 4px;
+    }
+    
+    .btn-skip {
+        background: white;
+        border-width: 3px;
+    }
+    
+    .progress-dot {
+        border: 2px solid #333;
+    }
+}
+
+/* Modo oscuro */
+@media (prefers-color-scheme: dark) {
+    .tutorial-overlay {
+        background: rgba(0, 0, 0, 0.9);
+    }
+    
+    .dialog-box {
+        background: rgba(40, 40, 40, 0.95);
+        color: #e0e0e0;
+    }
+    
+    .dialog-title {
+        color: var(--color-golden-sun);
+    }
+    
+    .dialog-text {
+        color: #d0d0d0;
+    }
+}

@@ -131,14 +131,24 @@ window.GAME_DATA = {
 {% endblock %}
 
 {% block extra_js %}
+<script src="{{ url_for('static', filename='js/progress-manager.js') }}"></script>
+<script src="{{ url_for('static', filename='js/game-engine.js') }}"></script>
+<script src="{{ url_for('static', filename='js/tutorials.js') }}"></script>
 <script src="{{ url_for('static', filename='js/khipu.js') }}"></script>
 <script>
+// Usar la nueva implementación dinámica
+</script>
+<script src="{{ url_for('static', filename='js/khipu-dynamic.js') }}"></script>
+<script>
 document.addEventListener('DOMContentLoaded', function() {
-    initKhipuGame();
-    showGameHeader();
+    // Mostrar tutorial antes de iniciar el juego
+    showTutorial('khipu', function() {
+        initKhipuGame();
+        showGameHeader();
+        console.log('🪢 Khipu game initialized after tutorial for Grade {{ grade }}, Level {{ level }}');
+    });
     
-    // CHANGE HERE: Configuración específica del juego Khipu
-    console.log('🪢 Khipu game initialized for Grade {{ grade }}, Level {{ level }}');
+    console.log('📚 Khipu tutorial system ready for Grade {{ grade }}, Level {{ level }}');
 });
 </script>
 {% endblock %}

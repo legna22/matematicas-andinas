@@ -1,0 +1,31 @@
+# Directorio para imágenes de personajes del tutorial
+# CHANGE HERE: Colocar aquí las siguientes imágenes de personajes:
+
+# Amaru (Khipu):
+# - niño_andino_saludo.png
+# - niño_andino_explicando.png  
+# - niño_andino_animando.png
+# - niño_andino_invitando.png
+
+# Chuya (Yupana):
+# - niña_andina_saludo.png
+# - niña_andina_explicando.png
+# - niña_andina_enseñando.png
+# - niña_andina_bendiciendo.png
+
+# Inti (Chacana):
+# - niño_sabio_saludo.png
+# - niño_sabio_explicando.png
+# - niño_sabio_mostrando.png
+# - niño_sabio_bendiciendo.png
+
+# Especificaciones:
+# - Formato PNG con transparencia
+# - Tamaño recomendado: 300x300px
+# - Estilo coherente con la estética andina
+# - Expresiones amigables y educativas
+
+# Mientras tanto, el sistema usa emojis como placeholder:
+# 👦 para Khipu (Amaru)
+# 👧 para Yupana (Chuya)  
+# 🧙‍♂️ para Chacana (Inti)

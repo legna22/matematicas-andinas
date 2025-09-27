@@ -4,6 +4,7 @@
 
 {% block extra_css %}
 <link rel="stylesheet" href="{{ url_for('static', filename='css/game.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/profile.css') }}">
 {% endblock %}
 
 {% block content %}
@@ -139,16 +140,63 @@
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     loadProfileData();
-    // CHANGE HERE: Configuración del perfil de usuario
+    loadGameProgress();
     console.log('👤 Profile page loaded');
 });
 
 function loadProfileData() {
-    // CHANGE HERE: Cargar datos del perfil desde localStorage o API
-    const savedName = localStorage.getItem('matematicas_andinas_username');
-    if (savedName) {
-        document.getElementById('userName').textContent = savedName;
-        document.getElementById('userNameInput').value = savedName;
+    // Cargar datos del usuario desde ProgressManager
+    if (window.ProgressManager) {
+        const user = window.ProgressManager.user;
+        const progress = window.ProgressManager.progress;
+        
+        document.getElementById('userName').textContent = user.name;
+        document.getElementById('userNameInput').value = user.name;
+        
+        // Actualizar estadísticas generales
+        const totalGames = Object.values(progress).reduce((total, gameProgress) => {
+            if (typeof gameProgress === 'object' && gameProgress !== null) {
+                return total + Object.keys(gameProgress).length;
+            }
+            return total;
+        }, 0) - 3; // Restar las propiedades no-juego
+        
+        document.getElementById('totalGames').textContent = Math.max(0, totalGames);
+        document.getElementById('totalTime').textContent = Math.floor(progress.totalPlayTime / 60) || 0;
+    }
+}
+
+function loadGameProgress() {
+    if (!window.ProgressManager) return;
+    
+    // Simular datos de niveles para calcular progreso
+    const mockLevels = {
+        khipu: Array.from({length: 8}, (_, i) => ({grade: 1, level: i + 1})),
+        yupana: Array.from({length: 8}, (_, i) => ({grade: 1, level: i + 1})),
+        chacana: Array.from({length: 8}, (_, i) => ({grade: 1, level: i + 1}))
+    };
+    
+    // Actualizar progreso de cada juego
+    Object.keys(mockLevels).forEach(gameType => {
+        const gameProgress = window.ProgressManager.getGameProgress(gameType, mockLevels[gameType]);
+        updateGameProgressCard(gameType, gameProgress);
+    });
+}
+
+function updateGameProgressCard(gameType, progress) {
+    const card = document.querySelector(`.game-progress-card .${gameType}-icon-small`);
+    if (!card) return;
+    
+    const progressCard = card.closest('.game-progress-card');
+    const progressBar = progressCard.querySelector('.progress-fill');
+    const progressText = progressCard.querySelector('p');
+    
+    if (progressBar) {
+        progressBar.style.width = `${progress.percentage}%`;
+    }
+    
+    if (progressText) {
+        progressText.textContent = `Nivel ${progress.completed} de ${progress.total}`;
     }
 }
 
@@ -156,30 +204,36 @@ function updateUserName() {
     const newName = document.getElementById('userNameInput').value.trim();
     if (newName) {
         document.getElementById('userName').textContent = newName;
-        localStorage.setItem('matematicas_andinas_username', newName);
+        
+        // Actualizar en ProgressManager
+        if (window.ProgressManager) {
+            window.ProgressManager.user.name = newName;
+            window.ProgressManager.saveProgress();
+        }
+        
         showNotification('Nombre actualizado correctamente');
     }
 }
 
 function resetProgress() {
     if (confirm('¿Estás seguro de que quieres reiniciar tu progreso? Esta acción no se puede deshacer.')) {
-        // CHANGE HERE: Lógica para reiniciar progreso
-        localStorage.removeItem('matematicas_andinas_progress');
+        if (window.ProgressManager) {
+            window.ProgressManager.resetProgress();
+        }
         showNotification('Progreso reiniciado');
-        location.reload();
+        setTimeout(() => location.reload(), 1000);
     }
 }
 
 function showNotification(message) {
-    // Simple notification system
-    const notification = document.createElement('div');
-    notification.className = 'notification';
-    notification.textContent = message;
-    document.body.appendChild(notification);
-    
-    setTimeout(() => {
-        notification.remove();
-    }, 3000);
+    if (window.MathAndinas && window.MathAndinas.showNotification) {
+        window.MathAndinas.showNotification(message, 'success');
+    } else {
+        alert(message);
+    }
 }
 </script>
+
+<!-- Cargar ProgressManager -->
+<script src="{{ url_for('static', filename='js/progress-manager.js') }}"></script>
 {% endblock %}

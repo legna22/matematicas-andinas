@@ -153,14 +153,21 @@ window.GAME_DATA = {
 {% endblock %}
 
 {% block extra_js %}
+<script src="{{ url_for('static', filename='js/progress-manager.js') }}"></script>
+<script src="{{ url_for('static', filename='js/game-engine.js') }}"></script>
+<script src="{{ url_for('static', filename='js/tutorials.js') }}"></script>
 <script src="{{ url_for('static', filename='js/yupana.js') }}"></script>
+<script src="{{ url_for('static', filename='js/yupana-dynamic.js') }}"></script>
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    initYupanaGame();
-    showGameHeader();
+    // Mostrar tutorial antes de iniciar el juego
+    showTutorial('yupana', function() {
+        initYupanaDynamicGame(); // Usar la nueva implementación
+        showGameHeader();
+        console.log('🧮 Yupana game initialized after tutorial for Grade {{ grade }}, Level {{ level }}');
+    });
     
-    // CHANGE HERE: Configuración específica del juego Yupana
-    console.log('🧮 Yupana game initialized for Grade {{ grade }}, Level {{ level }}');
+    console.log('📚 Yupana tutorial system ready for Grade {{ grade }}, Level {{ level }}');
 });
 </script>
 {% endblock %}

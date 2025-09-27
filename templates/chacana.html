@@ -163,14 +163,18 @@ window.GAME_DATA = {
 {% endblock %}
 
 {% block extra_js %}
+<script src="{{ url_for('static', filename='js/tutorials.js') }}"></script>
 <script src="{{ url_for('static', filename='js/chacana.js') }}"></script>
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    initChacanaGame();
-    showGameHeader();
+    // Mostrar tutorial antes de iniciar el juego
+    showTutorial('chacana', function() {
+        initChacanaGame();
+        showGameHeader();
+        console.log('✚ Chacana game initialized after tutorial for Grade {{ grade }}, Level {{ level }}');
+    });
     
-    // CHANGE HERE: Configuración específica del juego Chacana
-    console.log('✚ Chacana game initialized for Grade {{ grade }}, Level {{ level }}');
+    console.log('📚 Chacana tutorial system ready for Grade {{ grade }}, Level {{ level }}');
 });
 </script>
 {% endblock %}

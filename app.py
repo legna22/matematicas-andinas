@@ -99,6 +99,38 @@ def api_levels():
         except Exception as e:
             return jsonify({"success": False, "message": str(e)}), 400
 
+@app.route('/api/progress', methods=['GET', 'POST'])
+def api_progress():
+    """API para gestionar progreso del jugador"""
+    if request.method == 'GET':
+        # En una implementación real, esto vendría de una base de datos
+        # Por ahora, devolvemos estructura vacía para que el frontend use localStorage
+        return jsonify({
+            "message": "Use localStorage for progress management",
+            "structure": {
+                "khipu": {},
+                "yupana": {},
+                "chacana": {},
+                "user": {
+                    "name": "Estudiante",
+                    "currentGrade": 1
+                }
+            }
+        })
+    
+    elif request.method == 'POST':
+        # En una implementación real, aquí se guardaría en base de datos
+        try:
+            progress_data = request.json
+            # Por ahora solo validamos la estructura
+            required_keys = ['khipu', 'yupana', 'chacana']
+            if not all(key in progress_data for key in required_keys):
+                return jsonify({"success": False, "message": "Invalid progress structure"}), 400
+            
+            return jsonify({"success": True, "message": "Progress saved successfully"})
+        except Exception as e:
+            return jsonify({"success": False, "message": str(e)}), 400
+
 @app.route('/static/images/<path:filename>')
 def serve_images(filename):
     """Servir imágenes estáticas"""
