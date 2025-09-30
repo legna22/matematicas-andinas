@@ -1,512 +1,206 @@
-/**
- * Matemáticas Andinas - Khipu Game Logic
- * Lógica específica del juego Khipu
- */
-
-class KhipuGame extends GameCommon.GameManager {
-    constructor() {
-        super('khipu');
-        this.currentQuestion = null;
-        this.correctAnswer = null;
-        this.userAnswer = null;
-        this.knots = [];
-        this.canvas = null;
-        this.ctx = null;
-        
-        this.initializeGame();
-    }
-    
-    initializeGame() {
-        this.canvas = document.getElementById('khipuCanvas');
-        if (this.canvas) {
-            this.ctx = this.canvas.getContext('2d');
-            this.setupCanvas();
-        }
-        
-        this.setupAnswerButtons();
-        this.generateQuestion();
-        
-        console.log('🪢 Khipu game initialized');
-    }
-    
-    setupCanvas() {
-        // Configurar canvas responsivo
-        const container = this.canvas.parentElement;
-        const containerWidth = container.offsetWidth - 40; // Padding
-        const aspectRatio = 400 / 600; // height / width
-        
-        this.canvas.width = Math.min(600, containerWidth);
-        this.canvas.height = this.canvas.width * aspectRatio;
-        
-        // CHANGE HERE: Configurar el dibujo del khipu
-        this.drawKhipu();
-    }
-    
-    drawKhipu() {
-        if (!this.ctx) return;
-        
-        const { width, height } = this.canvas;
-        this.ctx.clearRect(0, 0, width, height);
-        
-        // Fondo del canvas
-        this.ctx.fillStyle = 'rgba(255, 248, 220, 0.9)';
-        this.ctx.fillRect(0, 0, width, height);
-        
-        // Cuerda principal
-        this.drawMainCord();
-        
-        // Cuerdas secundarias con nudos
-        this.drawSecondaryCords();
-        
-        // Dibujar nudos
-        this.drawKnots();
-    }
-    
-    drawMainCord() {
-        const { width, height } = this.canvas;
-        const centerX = width / 2;
-        
-        this.ctx.strokeStyle = '#8B4513';
-        this.ctx.lineWidth = 6;
-        this.ctx.beginPath();
-        this.ctx.moveTo(centerX, 20);
-        this.ctx.lineTo(centerX, height - 20);
-        this.ctx.stroke();
-        
-        // Sombra de la cuerda
-        this.ctx.strokeStyle = 'rgba(0, 0, 0, 0.2)';
-        this.ctx.lineWidth = 6;
-        this.ctx.beginPath();
-        this.ctx.moveTo(centerX + 2, 20);
-        this.ctx.lineTo(centerX + 2, height - 20);
-        this.ctx.stroke();
-    }
-    
-    drawSecondaryCords() {
-        const { width, height } = this.canvas;
-        const centerX = width / 2;
-        const cordCount = 3;
-        const cordSpacing = width / (cordCount + 1);
-        
-        this.ctx.strokeStyle = '#654321';
-        this.ctx.lineWidth = 3;
-        
-        for (let i = 0; i < cordCount; i++) {
-            const x = cordSpacing * (i + 1);
-            const startY = 60 + i * 20;
-            const endY = height - 60 - i * 20;
-            
-            // Conexión con cuerda principal
-            this.ctx.beginPath();
-            this.ctx.moveTo(centerX, startY);
-            this.ctx.lineTo(x, startY);
-            this.ctx.stroke();
-            
-            // Cuerda colgante
-            this.ctx.beginPath();
-            this.ctx.moveTo(x, startY);
-            this.ctx.lineTo(x, endY);
-            this.ctx.stroke();
-        }
-    }
-    
-    drawKnots() {
-        // Limpiar array de nudos anterior
-        this.knots = [];
-        
-        if (!this.correctAnswer) return;
-        
-        const { width, height } = this.canvas;
-        const cordCount = 3;
-        const cordSpacing = width / (cordCount + 1);
-        
-        // Distribuir nudos entre las cuerdas
-        const knotsPerCord = this.distributeKnots(this.correctAnswer, cordCount);
-        
-        for (let cordIndex = 0; cordIndex < cordCount; cordIndex++) {
-            const x = cordSpacing * (cordIndex + 1);
-            const knotCount = knotsPerCord[cordIndex];
-            const startY = 100 + cordIndex * 20;
-            const knotSpacing = 40;
-            
-            for (let knotIndex = 0; knotIndex < knotCount; knotIndex++) {
-                const knotY = startY + knotIndex * knotSpacing;
-                const knotType = this.getKnotType(knotIndex, knotCount);
-                
-                this.drawKnot(x, knotY, knotType);
-                this.knots.push({
-                    x: x,
-                    y: knotY,
-                    type: knotType,
-                    cord: cordIndex
-                });
-            }
-        }
-    }
-    
-    distributeKnots(total, cords) {
-        // Distribuir nudos de manera equilibrada entre las cuerdas
-        const knotsPerCord = new Array(cords).fill(0);
-        let remaining = total;
-        
-        // Distribución básica
-        const baseKnots = Math.floor(total / cords);
-        for (let i = 0; i < cords; i++) {
-            knotsPerCord[i] = baseKnots;
-            remaining -= baseKnots;
-        }
-        
-        // Distribuir nudos restantes
-        for (let i = 0; i < remaining; i++) {
-            knotsPerCord[i % cords]++;
-        }
-        
-        return knotsPerCord;
-    }
-    
-    getKnotType(knotIndex, totalKnots) {
-        // Alternar entre nudos simples y compuestos para variedad visual
-        if (totalKnots <= 3) {
-            return 'simple';
-        } else {
-            return knotIndex % 3 === 0 ? 'compound' : 'simple';
-        }
-    }
-    
-    drawKnot(x, y, type) {
-        const radius = type === 'compound' ? 12 : 8;
-        const gradient = this.ctx.createRadialGradient(x, y, 0, x, y, radius);
-        
-        if (type === 'compound') {
-            gradient.addColorStop(0, '#CD853F');
-            gradient.addColorStop(1, '#8B4513');
-        } else {
-            gradient.addColorStop(0, '#D2691E');
-            gradient.addColorStop(1, '#A0522D');
-        }
-        
-        // Sombra del nudo
-        this.ctx.shadowColor = 'rgba(0, 0, 0, 0.3)';
-        this.ctx.shadowBlur = 4;
-        this.ctx.shadowOffsetX = 2;
-        this.ctx.shadowOffsetY = 2;
-        
-        // Dibujar nudo
-        this.ctx.fillStyle = gradient;
-        this.ctx.beginPath();
-        this.ctx.arc(x, y, radius, 0, Math.PI * 2);
-        this.ctx.fill();
-        
-        // Borde del nudo
-        this.ctx.shadowColor = 'transparent';
-        this.ctx.strokeStyle = '#654321';
-        this.ctx.lineWidth = type === 'compound' ? 3 : 2;
-        this.ctx.stroke();
-        
-        // Centro del nudo
-        this.ctx.fillStyle = '#432818';
-        this.ctx.beginPath();
-        this.ctx.arc(x, y, radius * 0.3, 0, Math.PI * 2);
-        this.ctx.fill();
-    }
-    
-    setupAnswerButtons() {
-        const answerButtons = document.querySelectorAll('.answer-btn');
-        answerButtons.forEach(button => {
-            button.addEventListener('click', () => {
-                this.selectAnswer(button);
-            });
-        });
-    }
-    
-    selectAnswer(button) {
-        if (!this.isPlaying || this.userAnswer !== null) return;
-        
-        // Remover selección previa
-        document.querySelectorAll('.answer-btn').forEach(btn => {
-            btn.classList.remove('selected');
-        });
-        
-        // Seleccionar respuesta
-        button.classList.add('selected');
-        this.userAnswer = parseInt(button.querySelector('.answer-number').textContent);
-        
-        // Verificar respuesta después de un breve delay
-        setTimeout(() => {
-            this.checkAnswer();
-        }, 500);
-    }
-    
-    generateQuestion() {
-        if (!this.levelData) {
-            console.warn('⚠️ No level data available for question generation');
-            return;
-        }
-        
-        // Generar número objetivo basado en el rango del nivel
-        const min = this.levelData.target_min || 1;
-        const max = this.levelData.target_max || 10;
-        this.correctAnswer = Math.floor(Math.random() * (max - min + 1)) + min;
-        
-        // Actualizar interfaz
-        this.updateQuestionUI();
-        
-        // Generar opciones de respuesta
-        this.generateAnswerOptions();
-        
-        // Dibujar el khipu
-        setTimeout(() => {
-            this.drawKhipu();
-        }, 100);
-        
-        console.log('❓ Question generated:', this.correctAnswer);
-    }
-    
-    updateQuestionUI() {
-        const questionTitle = document.querySelector('.question-title');
-        if (questionTitle) {
-            questionTitle.textContent = '¿Cuántos nudos ves?';
-        }
-        
-        // Animación de aparición de la pregunta
-        const questionSection = document.querySelector('.question-section');
-        if (questionSection) {
-            questionSection.style.animation = 'fadeIn 0.6s ease-out';
-        }
-    }
-    
-    generateAnswerOptions() {
-        const buttons = document.querySelectorAll('.answer-btn');
-        const options = this.generateOptions(this.correctAnswer);
-        
-        buttons.forEach((button, index) => {
-            if (index < options.length) {
-                const numberSpan = button.querySelector('.answer-number');
-                const labelSpan = button.querySelector('.answer-label');
-                
-                if (numberSpan) numberSpan.textContent = options[index];
-                if (labelSpan) {
-                    labelSpan.textContent = this.numberToWord(options[index]) + ' nudos';
-                }
-                
-                // Marcar respuesta correcta para verificación
-                if (options[index] === this.correctAnswer) {
-                    button.classList.add('correct-option');
-                } else {
-                    button.classList.remove('correct-option');
-                }
-                
-                button.style.display = 'flex';
-            } else {
-                button.style.display = 'none';
-            }
-        });
-    }
-    
-    generateOptions(correctAnswer) {
-        const options = [correctAnswer];
-        const usedNumbers = new Set([correctAnswer]);
-        
-        // Generar opciones incorrectas
-        while (options.length < 3) {
-            let option;
-            if (Math.random() < 0.5) {
-                // Opción menor
-                option = correctAnswer - Math.floor(Math.random() * 5 + 1);
-            } else {
-                // Opción mayor
-                option = correctAnswer + Math.floor(Math.random() * 5 + 1);
-            }
-            
-            // Asegurar que la opción sea válida y única
-            if (option > 0 && option <= 50 && !usedNumbers.has(option)) {
-                options.push(option);
-                usedNumbers.add(option);
-            }
-        }
-        
-        // Mezclar opciones
-        return this.shuffleArray(options);
-    }
-    
-    shuffleArray(array) {
-        const shuffled = [...array];
-        for (let i = shuffled.length - 1; i > 0; i--) {
-            const j = Math.floor(Math.random() * (i + 1));
-            [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
-        }
-        return shuffled;
-    }
-    
-    numberToWord(num) {
-        const words = {
-            1: 'Un', 2: 'Dos', 3: 'Tres', 4: 'Cuatro', 5: 'Cinco',
-            6: 'Seis', 7: 'Siete', 8: 'Ocho', 9: 'Nueve', 10: 'Diez',
-            11: 'Once', 12: 'Doce', 13: 'Trece', 14: 'Catorce', 15: 'Quince',
-            16: 'Dieciséis', 17: 'Diecisiete', 18: 'Dieciocho', 19: 'Diecinueve', 20: 'Veinte'
+ 
+    class KhipuGameImproved {
+      constructor() {
+        this.columns = [
+          { knots: 0, max: 9 },
+          { knots: 0, max: 9 },
+          { knots: 0, max: 9 }
+        ];
+        this.targetNumber = 0;
+        this.score = 0;
+        this.streak = 0;
+        this.attempts = 0;
+        this.difficulty = 'facil';
+        this.difficultyRanges = {
+          facil: { min: 1, max: 50 },
+          medio: { min: 1, max: 200 },
+          dificil: { min: 1, max: 999 }
         };
-        return words[num] || num.toString();
-    }
-    
-    checkAnswer() {
-        if (this.userAnswer === null) return;
+        // Paleta de colores vibrantes inspirada en textiles andinos
+        this.palette = [
+          "#FF6B6B", "#FFB347", "#FFD93D", "#6BCB77", 
+          "#4D96FF", "#845EC2", "#FF9999", "#87CEEB",
+          "#F0E68C", "#DDA0DD", "#98FB98", "#F4A460"
+        ];
+        this.achievements = [
+          { id: 'first_success', name: '🎉 ¡Primer Éxito!', condition: () => this.streak >= 1 },
+          { id: 'streak_5', name: '🔥 ¡Racha de 5!', condition: () => this.streak >= 5 },
+          { id: 'khipu_master', name: '👑 ¡Maestro del Khipu!', condition: () => this.score >= 100 },
+          { id: 'inca_expert', name: '🏆 ¡Experto Inca!', condition: () => this.score >= 500 }
+        ];
+        this.unlockedAchievements = new Set();
+        this.init();
+      }
+
+      init() {
+        this.updateDisplay();
+        this.generateTarget();
+      }
+
+      addKnot(cordIndex) {
+        if (cordIndex < 0 || cordIndex >= this.columns.length) return;
         
-        const isCorrect = this.userAnswer === this.correctAnswer;
-        const selectedButton = document.querySelector('.answer-btn.selected');
+        this.columns[cordIndex].knots++;
         
-        if (isCorrect) {
-            this.handleCorrectAnswer(selectedButton);
-        } else {
-            this.handleIncorrectAnswer(selectedButton);
-        }
-    }
-    
-    handleCorrectAnswer(button) {
-        if (button) {
-            button.classList.add('correct');
-            GameCommon.GameAnimations.animateSuccess(button);
-        }
-        
-        // Animar nudos con efecto de celebración
-        this.animateKnotsSuccess();
-        
-        // Reproducir sonido de éxito
-        GameCommon.SoundManager.play('success');
-        
-        // Mostrar feedback positivo
-        this.showFeedback('¡Correcto! Contaste bien los nudos', 'success');
-        
-        // Incrementar puntuación
-        this.score += 10;
-        
-        // Finalizar nivel con éxito
-        setTimeout(() => {
-            this.endGame(true);
-        }, 2000);
-        
-        GameCommon.AccessibilityManager.announce('Respuesta correcta');
-    }
-    
-    handleIncorrectAnswer(button) {
-        if (button) {
-            button.classList.add('incorrect');
-            GameCommon.GameAnimations.animateError(button);
+        // Sistema de valor posicional - al llegar a 10, reinicia y pasa a la siguiente
+        if (this.columns[cordIndex].knots >= 10) {
+          this.columns[cordIndex].knots = 0;
+          if (cordIndex > 0) {
+            this.addKnot(cordIndex - 1);
+          }
         }
         
-        // Mostrar la respuesta correcta
-        const correctButton = document.querySelector('.answer-btn.correct-option');
-        if (correctButton) {
-            correctButton.classList.add('correct');
+        this.updateDisplay();
+        this.checkWin();
+      }
+
+      removeKnot() {
+        // Buscar de derecha a izquierda la primera cuerda con cuentas
+        for (let i = this.columns.length - 1; i >= 0; i--) {
+          if (this.columns[i].knots > 0) {
+            this.columns[i].knots--;
+            break;
+          }
         }
+        this.updateDisplay();
+      }
+
+      calculateValue() {
+        return this.columns[0].knots * 100 +
+               this.columns[1].knots * 10 +
+               this.columns[2].knots;
+      }
+
+      generateTarget() {
+        const range = this.difficultyRanges[this.difficulty];
+        this.targetNumber = Math.floor(Math.random() * (range.max - range.min + 1)) + range.min;
+        document.getElementById('targetNumber').textContent = this.targetNumber;
+        this.attempts++;
+        this.updateDisplay();
+      }
+
+      checkWin() {
+        const currentValue = this.calculateValue();
+        if (currentValue === this.targetNumber) {
+          const points = this.getScoreMultiplier();
+          this.score += points;
+          this.streak++;
+          this.showCelebration();
+          this.showAchievement('🎉 ¡Correcto! +' + points + ' puntos');
+          this.checkAchievements();
+          setTimeout(() => this.generateTarget(), 2000);
+        } else if (currentValue > this.targetNumber) {
+          this.streak = 0;
+        }
+      }
+
+      getScoreMultiplier() {
+        const baseScore = {
+          facil: 10,
+          medio: 20,
+          dificil: 50
+        };
+        return baseScore[this.difficulty] + (this.streak * 5);
+      }
+
+      showCelebration() {
+        const container = document.querySelector('.khipu-area');
+        const emojis = ['🎉', '✨', '🌟', '🎊', '💫', '⭐'];
         
-        // Reproducir sonido de error
-        GameCommon.SoundManager.play('error');
-        
-        // Mostrar feedback
-        this.showFeedback(`Incorrecto. La respuesta era ${this.correctAnswer} nudos`, 'error');
-        
-        // Reiniciar después de mostrar la respuesta correcta
-        setTimeout(() => {
-            this.resetQuestion();
-        }, 3000);
-        
-        GameCommon.AccessibilityManager.announce('Respuesta incorrecta');
-    }
-    
-    animateKnotsSuccess() {
-        // Animar nudos en el canvas con efecto de brillo
-        const canvas = document.querySelector('.khipu-frame');
-        if (canvas) {
-            canvas.style.animation = 'success-glow 1s ease-in-out';
+        for (let i = 0; i < 8; i++) {
+          setTimeout(() => {
+            const celebration = document.createElement('div');
+            celebration.className = 'celebration';
+            celebration.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+            celebration.style.left = Math.random() * container.offsetWidth + 'px';
+            celebration.style.top = Math.random() * container.offsetHeight + 'px';
+            container.appendChild(celebration);
             
-            // Crear partículas de celebración
-            GameCommon.GameAnimations.createParticles(canvas, 15);
+            setTimeout(() => celebration.remove(), 2000);
+          }, i * 100);
         }
-        
-        // Efecto de conteo animado
-        this.animateKnotCounting();
-    }
-    
-    animateKnotCounting() {
-        // Animar el conteo de nudos de manera secuencial
-        this.knots.forEach((knot, index) => {
+      }
+
+      checkAchievements() {
+        this.achievements.forEach(achievement => {
+          if (!this.unlockedAchievements.has(achievement.id) && achievement.condition()) {
+            this.unlockedAchievements.add(achievement.id);
             setTimeout(() => {
-                this.highlightKnot(knot.x, knot.y);
-            }, index * 200);
+              this.showAchievement('🏆 ' + achievement.name);
+            }, 1500);
+          }
         });
-    }
-    
-    highlightKnot(x, y) {
-        if (!this.ctx) return;
-        
-        // Dibujar círculo de resaltado
-        this.ctx.strokeStyle = 'rgba(255, 215, 0, 0.8)';
-        this.ctx.lineWidth = 4;
-        this.ctx.beginPath();
-        this.ctx.arc(x, y, 20, 0, Math.PI * 2);
-        this.ctx.stroke();
-        
-        // El círculo se desvanece automáticamente al redibujar
+      }
+
+      showHint() {
+        const target = this.targetNumber;
+        const centenas = Math.floor(target / 100);
+        const decenas = Math.floor((target % 100) / 10);
+        const unidades = target % 10;
+        this.showAchievement(`💡 Pista: ${centenas} centenas, ${decenas} decenas, ${unidades} unidades`);
+      }
+
+      showAchievement(message) {
+        const achievementDiv = document.getElementById('achievement');
+        achievementDiv.textContent = message;
+        achievementDiv.style.display = 'block';
         setTimeout(() => {
-            // Opcional: redibujar para limpiar el resaltado
-        }, 300);
-    }
-    
-    resetQuestion() {
-        // Limpiar estado
-        this.userAnswer = null;
-        this.correctAnswer = null;
+          achievementDiv.style.display = 'none';
+        }, 4000);
+      }
+
+      reset() {
+        this.columns.forEach(col => col.knots = 0);
+        this.updateDisplay();
+      }
+
+      updateDisplay() {
+        document.getElementById('currentNumber').textContent = this.calculateValue();
         
-        // Limpiar clases de los botones
-        document.querySelectorAll('.answer-btn').forEach(btn => {
-            btn.classList.remove('selected', 'correct', 'incorrect', 'correct-option');
+        this.columns.forEach((col, index) => {
+          document.getElementById(`count${index}`).textContent = col.knots;
+          const cordElement = document.getElementById(`cord${index}`);
+          cordElement.innerHTML = '';
+          
+          for (let i = 0; i < col.knots; i++) {
+            const knot = document.createElement('div');
+            knot.className = 'knot';
+            knot.style.top = (35 + i * 30) + 'px';
+            
+            // 🎨 Asignar color consistente basado en posición
+            const colorIndex = (index * 3 + i) % this.palette.length;
+            knot.style.background = this.palette[colorIndex];
+            
+            // Añadir ligera variación en posición para más naturalidad
+            const wobble = (Math.sin(i * 0.5) * 3);
+            knot.style.left = (wobble - 12) + 'px';
+            
+            cordElement.appendChild(knot);
+          }
         });
         
-        // Generar nueva pregunta
-        this.generateQuestion();
-    }
-    
-    /**
-     * Manejo de redimensionamiento de ventana
-     */
-    handleResize() {
-        if (this.canvas) {
-            this.setupCanvas();
-        }
-    }
+        document.getElementById('score').textContent = this.score;
+        document.getElementById('streak').textContent = this.streak;
+        document.getElementById('attempts').textContent = this.attempts;
+      }
+
+      setDifficulty(level, btn) {
+  this.difficulty = level;
+  document.querySelectorAll('.difficulty-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  this.generateTarget();
 }
 
-/**
- * Funciones específicas de Khipu
- */
-function initKhipuGame() {
-    window.khipuGame = new KhipuGame();
-    
-    // Configurar redimensionamiento
-    window.addEventListener('resize', () => {
-        if (window.khipuGame) {
-            window.khipuGame.handleResize();
-        }
-    });
-    
-    // Iniciar el juego
-    setTimeout(() => {
-        window.khipuGame.startGame();
-    }, 1000);
-    
-    console.log('🪢 Khipu game initialization complete');
-}
+    }
 
-// CHANGE HERE: Configuración específica de Khipu
-const KHIPU_CONFIG = {
-    maxKnotsPerCord: 8,
-    cordColors: ['#8B4513', '#654321', '#A0522D'],
-    knotSizes: {
-        simple: 8,
-        compound: 12
-    },
-    animationDuration: 300
-};
+    let game;
 
-// Exportar para uso global
-window.KhipuGame = KhipuGame;
+    function addKnot(index) { game.addKnot(index); }
+    function removeKnot() { game.removeKnot(); }
+    function generateTarget() { game.generateTarget(); }
+    function reset() { game.reset(); }
+    function showHint() { game.showHint(); }
+    function setDifficulty(level) { game.setDifficulty(level); }
+
+    window.onload = function() { game = new KhipuGameImproved(); };
+ 

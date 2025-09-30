@@ -1,4 +1,4 @@
- <script>
+ 
     class KhipuGameImproved {
       constructor() {
         this.columns = [
@@ -184,12 +184,13 @@
         document.getElementById('attempts').textContent = this.attempts;
       }
 
-      setDifficulty(level) {
-        this.difficulty = level;
-        document.querySelectorAll('.difficulty-btn').forEach(btn => btn.classList.remove('active'));
-        event.target.classList.add('active');
-        this.generateTarget();
-      }
+      setDifficulty(level, btn) {
+  this.difficulty = level;
+  document.querySelectorAll('.difficulty-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  this.generateTarget();
+}
+
     }
 
     let game;
@@ -202,4 +203,4 @@
     function setDifficulty(level) { game.setDifficulty(level); }
 
     window.onload = function() { game = new KhipuGameImproved(); };
-  </script>
+ 
