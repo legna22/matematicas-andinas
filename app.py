@@ -39,17 +39,14 @@ def khipu():
     """Juego Khipu - Sistema de nudos andinos"""
     grade = request.args.get('grade', '1')
     level = request.args.get('level', '1')
+    difficulty = request.args.get('difficulty', 'facil')
     levels_data = load_levels()
     
     return render_template('khipu.html', 
                          grade=grade, 
                          level=level,
+                         difficulty=difficulty,
                          levels=levels_data.get('khipu', []))
-
-@app.route('/kipu')
-def kipu():
-    return render_template('kipu.html')
-
 
 @app.route('/yupana')
 def yupana():

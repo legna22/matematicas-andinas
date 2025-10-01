@@ -8,6 +8,7 @@ window.AppState = {
     selectedGame: null,
     selectedLevel: 'primaria',
     selectedGrade: 1,
+    selectedDifficulty: 'facil',
     isTransitioning: false
 };
 
@@ -17,6 +18,7 @@ window.AppState = {
 function initHomeSelection() {
     const gameOptions = document.querySelectorAll('.game-option');
     const levelButtons = document.querySelectorAll('.btn-level');
+    const difficultyButtons = document.querySelectorAll('.btn-difficulty');
     const gradeSelect = document.getElementById('gradeSelect');
     const playButton = document.getElementById('playButton');
     
@@ -46,6 +48,13 @@ function initHomeSelection() {
         });
     });
     
+    // Configurar botones de dificultad
+    difficultyButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            selectDifficulty(this.dataset.difficulty);
+        });
+    });
+    
     // Configurar selector de grado
     if (gradeSelect) {
         gradeSelect.addEventListener('change', function() {
@@ -66,6 +75,7 @@ function initHomeSelection() {
     
     // Inicializar estado por defecto
     updateGradeOptions('primaria');
+    selectDifficulty('facil');
     updatePlayButton();
     
     // SUGGEST: Para agregar nuevos juegos, crear elementos con clase 'game-option' y data-game="nombre"
@@ -116,6 +126,21 @@ function selectLevel(level) {
     }
 }
 
+/**
+ * Seleccionar dificultad
+ */
+function selectDifficulty(difficulty) {
+    document.querySelectorAll('.btn-difficulty').forEach(button => {
+        button.classList.remove('active');
+    });
+    
+    const selectedButton = document.querySelector(`[data-difficulty="${difficulty}"]`);
+    if (selectedButton) {
+        selectedButton.classList.add('active');
+        window.AppState.selectedDifficulty = difficulty;
+        console.log('⚡ Difficulty selected:', difficulty);
+    }
+}
 /**
  * Actualizar opciones de grado según el nivel educativo
  */
@@ -204,11 +229,12 @@ function startGame() {
  * Construir URL del juego con parámetros
  */
 function buildGameUrl() {
-    const { selectedGame, selectedGrade } = window.AppState;
+    const { selectedGame, selectedGrade, selectedDifficulty } = window.AppState;
     const baseUrl = `/${selectedGame}`;
     const params = new URLSearchParams({
         grade: selectedGrade,
-        level: 1 // Siempre empezar en nivel 1
+        level: 1, // Siempre empezar en nivel 1
+        difficulty: selectedDifficulty
     });
     
     return `${baseUrl}?${params.toString()}`;

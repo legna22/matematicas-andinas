@@ -40,22 +40,22 @@ class TutorialManager {
                 character: "Amaru, el niño quipucamayoc",
                 steps: [
                     {
-                        text: "¡Hola! Soy Amaru, guardián de los khipus sagrados. En las altas montañas del Tawantinsuyo, mis ancestros usaban estas cuerdas mágicas para contar historias y números...",
+                        text: "¡Hola! Soy Amaru, guardián de los khipus sagrados. En las altas montañas del Tawantinsuyo, mis ancestros usaban cuerdas con nudos coloridos para registrar números y contar tesoros...",
                         image: "niño_andino_saludo",
                         animation: "fadeIn"
                     },
                     {
-                        text: "Cada nudo en el khipu tiene un valor especial. Los nudos simples y compuestos, todos valen 1. Tu misión es contar todos los nudos que veas en la cuerda sagrada.",
+                        text: "Cada cuerda representa una posición: centenas (×100), decenas (×10) y unidades (×1). Haz clic en las cuerdas para añadir cuentas coloridas y formar el número objetivo.",
                         image: "niño_andino_explicando",
                         animation: "bounce"
                     },
                     {
-                        text: "Observa bien cada cuerda colgante, cuenta con cuidado y elige la respuesta correcta. ¡Los espíritus de la montaña te guiarán!",
+                        text: "Cuando una cuerda llega a 10 cuentas, se reinicia automáticamente y pasa su valor a la cuerda de la izquierda. ¡Es el sistema decimal de los incas!",
                         image: "niño_andino_animando",
                         animation: "pulse"
                     },
                     {
-                        text: "¿Estás listo para demostrar tu sabiduría andina? ¡Acompáñame en esta aventura matemática!",
+                        text: "Forma el número objetivo haciendo clic en las cuerdas. Cada clic añade una cuenta colorida. ¡Experimenta y descubre la sabiduría matemática de los incas!",
                         image: "niño_andino_invitando",
                         animation: "wave"
                     }
@@ -240,16 +240,16 @@ class TutorialManager {
             characterImage.className = `character-image ${currentStepData.animation || 'fadeIn'}`;
             
             // CHANGE HERE: Reemplazar emojis con imágenes reales cuando estén disponibles
-            const imagePath = `/static/images/characters/${currentStepData.image}.png`;
-            characterImage.innerHTML = `<img src="${imagePath}" alt="${this.tutorialData.character}" class="character-img">`;
+            // const imagePath = `/static/images/characters/${currentStepData.image}.png`;
+            // characterImage.innerHTML = `<img src="${imagePath}" alt="${this.tutorialData.character}" class="character-img">`;
             
             // Por ahora usamos emojis como placeholder
-            // const characterEmojis = {
-            //     khipu: '👦',
-            //     yupana: '👧',
-            //     chacana: '🧙‍♂️'
-            // };
-            // characterImage.innerHTML = `<div class="character-placeholder">${characterEmojis[this.currentGame] || '👦'}</div>`;
+            const characterEmojis = {
+                khipu: '👦',
+                yupana: '👧',
+                chacana: '🧙‍♂️'
+            };
+            characterImage.innerHTML = `<div class="character-placeholder">${characterEmojis[this.currentGame] || '👦'}</div>`;
         }
         
         // Actualizar botón siguiente

@@ -258,7 +258,7 @@
 /* Selección de grado */
 .grade-selection {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr 1fr 1fr;
     gap: var(--spacing-xl);
     margin-bottom: var(--spacing-xl);
     padding: var(--spacing-lg);
@@ -266,8 +266,47 @@
     border-radius: var(--border-radius-lg);
 }
 
+.difficulty-selection {
+    text-align: center;
+}
+
+.difficulty-selection h3 {
+    margin-bottom: var(--spacing-md);
+    color: var(--color-earth-brown);
+    font-size: var(--font-size-lg);
+}
+
+.difficulty-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-sm);
+}
+
+.btn-difficulty {
+    padding: var(--spacing-md);
+    border: 2px solid var(--color-earth-brown);
+    background: white;
+    color: var(--color-earth-brown);
+    border-radius: var(--border-radius-md);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    font-weight: 600;
+    font-size: var(--font-size-sm);
+}
+
+.btn-difficulty:hover {
+    background: var(--color-light-parchment);
+    transform: translateY(-1px);
+}
+
+.btn-difficulty.active {
+    background: var(--color-earth-brown);
+    color: white;
+}
+
 .education-level h3,
-.grade-number h3 {
+.grade-number h3,
+.difficulty-selection h3 {
     text-align: center;
     margin-bottom: var(--spacing-md);
     font-size: var(--font-size-lg);
@@ -665,6 +704,16 @@
     .grade-selection {
         grid-template-columns: 1fr;
         gap: var(--spacing-md);
+    }
+    
+    .difficulty-buttons {
+        flex-direction: row;
+        gap: var(--spacing-xs);
+    }
+    
+    .btn-difficulty {
+        font-size: var(--font-size-xs);
+        padding: var(--spacing-sm);
     }
     
     .additional-options {

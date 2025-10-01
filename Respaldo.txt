@@ -31,3 +31,7 @@ services:
   - FLASK_APP=app.py
   - FLASK_ENV=development
   - FLASK_DEBUG=1
+
+
+
+la parte de instruciones que aparece debajo de lo que viene debajo del juego como tal , y de resto lo demas que quede como esta queda bien y si se puede implementar lo que viene siendo la ejecucion y una forma de que cada dificulta sea diferente estaria genial 

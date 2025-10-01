@@ -203,4 +203,25 @@
     function setDifficulty(level) { game.setDifficulty(level); }
 
     window.onload = function() { game = new KhipuGameImproved(); };
- 
+    
+ function showHelp() {
+    const modal = document.getElementById("helpModal");
+    if (modal) {
+        modal.style.display = "block";
+    }
+}
+
+function closeHelp() {
+    const modal = document.getElementById("helpModal");
+    if (modal) {
+        modal.style.display = "none";
+    }
+}
+
+// También puedes cerrar al hacer clic fuera del modal
+window.onclick = function(event) {
+    const modal = document.getElementById("helpModal");
+    if (event.target === modal) {
+        modal.style.display = "none";
+    }
+};
